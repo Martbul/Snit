@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { icons, images } from "../constants";
+import { router } from "expo-router";
 
 const KnowledgeBaseCard = ({item}) => {
   return (
@@ -34,9 +35,13 @@ const KnowledgeBaseCard = ({item}) => {
     //    </View>
     //  </View>
 
-    <View className="bg-secondary w-40 h-14 rounded-2xl justify-center items-center">
+     //TODO: add logic so that use is redirected to the correct dataset
+    <TouchableOpacity
+      className="bg-secondary w-40 h-14 rounded-2xl justify-center items-center"
+      onPress={() => router.push("/knowledgeimages")}
+    >
       <Text className="flex justify-center items-center">Dataset 1</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

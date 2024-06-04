@@ -11,10 +11,9 @@ export default function App() {
 console.log('index',user);
    if(!isLoading && user!== null ) return <Redirect href="/home"/>
    return (
-     //safeaAreaView ensures that the content is visible on all different divices
-     // and ensures that the content doesnt overlap with nav bar, status bar etc
+ 
      <SafeAreaView className="bg-primary h-full">
-       {/* ScrollView makes the whole screen scrolable (there can be small devices that cannot see the full content and need to scroll) */}
+     
        <ScrollView contentContainerStyle={{ height: "100%" }}>
          <View className="w-full justify-center items-center min-h-[85vh] px-4">
            <Image

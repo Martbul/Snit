@@ -15,6 +15,10 @@ import database from "../assets/icons/database.png";
 import car from "../assets/icons/car.png";
 import menuhamburger from "../assets/icons/menuhamburger.png";
 import plusBig from "../assets/icons/plusBig.png";
+import backArrow from "../assets/icons/backArrow.png";
+import dots from "../assets/icons/dots.png";
+import addFolder from "../assets/icons/addFolder.png";
+import addPhoto from "../assets/icons/addPhoto.png";
 
 export default {
   play,
@@ -34,4 +38,8 @@ export default {
   car,
   menuhamburger,
   plusBig,
+  backArrow,
+  addFolder,
+  addPhoto,
+  dots,
 };

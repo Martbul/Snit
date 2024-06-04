@@ -33,22 +33,7 @@ const Bookmark = () => {
           }}
           data={[
             { name: 1 },
-            { name: 2 },
-            { name: 3 },
-            { name: 1 },
-            { name: 2 },
-            { name: 3 },
-
-            { name: 1 },
-            { name: 2 },
-            { name: 3 },
-            { name: 1 },
-            { name: 2 },
-            { name: 3 },
-
-            { name: 1 },
-            { name: 2 },
-            { name: 3 },
+           
           ]}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
