@@ -11,6 +11,10 @@ import logout from "../assets/icons/logout.png";
 import eyeHide from "../assets/icons/eye-hide.png";
 import eye from "../assets/icons/eye.png";
 import play from "../assets/icons/play.png";
+import database from "../assets/icons/database.png";
+import car from "../assets/icons/car.png";
+import menuhamburger from "../assets/icons/menuhamburger.png";
+import plusBig from "../assets/icons/plusBig.png";
 
 export default {
   play,
@@ -26,4 +30,8 @@ export default {
   logout,
   eyeHide,
   eye,
+  database,
+  car,
+  menuhamburger,
+  plusBig,
 };

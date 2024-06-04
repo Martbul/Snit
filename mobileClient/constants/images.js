@@ -7,5 +7,17 @@ import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
 import user from "../assets/images/user.png";
 import userProfileImage from "../assets/images/userProfileImage.png";
+import searchCar from "../assets/images/searchCar.png";
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty, user, userProfileImage};
+export default {
+  profile,
+  thumbnail,
+  cards,
+  path,
+  logo,
+  logoSmall,
+  empty,
+  user,
+  userProfileImage,
+  searchCar,
+};

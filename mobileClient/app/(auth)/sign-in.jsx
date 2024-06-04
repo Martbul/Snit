@@ -46,7 +46,7 @@ const SignIn = () => {
           />
 
           <Text className="text-2xl text-white semi-bold mt-10 font-psemibold">
-            Log into Aora
+            Log into Snit
           </Text>
 
           <FormField

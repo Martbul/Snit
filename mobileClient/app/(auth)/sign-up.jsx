@@ -46,7 +46,7 @@ const SignUp = () => {
          className='w-[115px] h-[35px]' 
          resizeMode="contain"/>
 
-         <Text className="text-2xl text-white semi-bold mt-10 font-psemibold">Sign up to Aora</Text>
+         <Text className="text-2xl text-white semi-bold mt-10 font-psemibold">Sign up to Snit</Text>
 
 
          <FormField
