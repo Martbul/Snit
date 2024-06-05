@@ -15,7 +15,7 @@ import VideoCard from "../../components/VideoCard";
 import { AuthContext } from "../../contexts/AuthContext";
 import { icons, images } from "../../constants";
 import { logoutUser } from "../../services/userAuth";
-import InfoBox from "../../components/InfoBox";
+import InfoBox from "../../components/singleUIElements/InfoBox";
 import { router } from "expo-router";
 
 // [query].jsx is a dynamic route component in Next.js, which means it can receive query parameters.

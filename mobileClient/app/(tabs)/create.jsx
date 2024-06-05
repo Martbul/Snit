@@ -1,10 +1,12 @@
 import { View, Text, ScrollView, TouchableOpacity, Image, Alert, } from "react-native";
 import React, { useContext, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import FormField from "../../components/FormField";
+import FormField from "../../components/singleUIElements/FormField";
+
 import { Video, ResizeMode } from "expo-av";
 import { icons } from "../../constants";
-import CustomButton from "../../components/CustomButton";
+
+import CustomButton from "../../components/singleUIElements/CustomButton";
 import * as DocumentPicker from 'expo-document-picker';
 import {router} from 'expo-router'
 import { createVideo } from "../../services/videoServices";

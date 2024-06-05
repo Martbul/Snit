@@ -2,8 +2,8 @@ import { View, Text, ScrollView, Image, Alert } from 'react-native'
 import React, { useContext, useState } from 'react'
 import {  SafeAreaView } from 'react-native-safe-area-context'
 import {images} from '../../constants'
-import FormField from '../../components/FormField'
-import CustomButton from '../../components/CustomButton'
+import FormField from "../../components/singleUIElements/FormField";
+import CustomButton from "../../components/singleUIElements/CustomButton";
 import { Link, router } from 'expo-router'
 import { AuthContext } from '../../contexts/AuthContext'
 import { registerUser } from '../../services/userAuth'

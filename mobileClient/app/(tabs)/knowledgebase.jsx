@@ -1,36 +1,48 @@
-import { View, Text, Image, FlatList, ScrollView, TouchableOpacity } from 'react-native'
-import React, { useContext, useEffect } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import SmallSearchInput from '../../components/SmallSeacrhInout';
-import { icons, images } from '../../constants';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import React, { useContext, useEffect } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import SmallSearchInput from "../../components/singleUIElements/SmallSeacrhInput";
+import { icons, images } from "../../constants";
 
-import KnowledgeBaseCard from '../../components/KnowledgeBaseCard';
-import { createKnowledgeBase, getAllKnowledgeBases } from "../../services/knowledgeServices";
-import { AuthContext } from '../../contexts/AuthContext';
-import useFetchKnowledgeBases from '../../hooks/useFetchKnowledgeBases';
-import EmptyState from '../../components/EmptyState';
-
-
+import KnowledgeBaseCard from "../../components/knowledgeBase/KnowledgeBaseCard";
+import {
+  createKnowledgeBase,
+  getAllKnowledgeBases,
+} from "../../services/knowledgeServices";
+import { AuthContext } from "../../contexts/AuthContext";
+import useFetchKnowledgeBases from "../../hooks/useFetchKnowledgeBases";
+import EmptyState from "../../components/EmptyState";
+import { router } from "expo-router";
 
 const Knowledge = () => {
   const { user } = useContext(AuthContext);
- 
- 
-   const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
-     getAllKnowledgeBases(user.email)
-   );
 
-   // Use an effect to refetch the data whenever the component mounts or the user changes
-   useEffect(() => {
-     refetch();
-   }, []);
-  
+  const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
+    getAllKnowledgeBases(user.email)
+  );
 
-  const createNewKnowledgeBase = async() => {
-    
-    console.log('sdasda');
-    const newKnowledgeBase = await createKnowledgeBase(user.email);
+  // Use an effect to refetch the data whenever the component mounts or the user changes
+  useEffect(() => {
     refetch();
+  }, []);
+
+  const createNewKnowledgeBase = async () => {
+    console.log("sdasda");
+    const newKnowledgeBase = await createKnowledgeBase(user.email)
+    
+   refetch();
+
+     router.push({
+       pathname: "/(knowledge)/[knowledgedata]",
+       params: { title: newKnowledgeBase.title },
+     });
     //TODO: redirect to the page of the already creaded Kbase
   };
 
@@ -62,7 +74,6 @@ const Knowledge = () => {
               <KnowledgeBaseCard item={item} />
             </View>
           )}
-        
           ListEmptyComponent={() => (
             <EmptyState
               title="Add knowledge folders"

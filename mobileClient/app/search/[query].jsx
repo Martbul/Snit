@@ -2,9 +2,9 @@ import { View, Text, FlatList } from "react-native";
 import React, { useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { searchVideos } from "../../services/videoServices";
 
-import SearchInput from "../../components/SearchInput";
+
+import SearchInput from "../../components/singleUIElements/SearchInput";
 import EmptyState from '../../components/EmptyState'
 import VideoCard from '../../components/VideoCard'
 

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-import { icons } from "../constants";
+import { icons } from "../../constants";
 import { router, usePathname } from "expo-router";
 
 

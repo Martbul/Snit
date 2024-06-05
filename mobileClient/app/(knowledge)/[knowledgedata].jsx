@@ -1,37 +1,37 @@
-import { View, Text, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SmallSearchInput from "../../components/SmallSeacrhInout";
+
 import { icons, images } from "../../constants";
-import SearchInput from "../../components/SearchInput";
+
 import VideoCard from "../../components/VideoCard";
 import EmptyState from "../../components/EmptyState";
-import KnowledgeBaseCard from "../../components/KnowledgeBaseCard";
+import KnowledgeBaseCard from "../../components/knowledgeBase/KnowledgeBaseCard";
 import FileCategory from "../../components/FileCategory";
-import KnowledgeBaseImage from "../../components/KnowledgeBaseImage";
-import { router } from "expo-router";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import KnowledgeBaseImage from "../../components/knowledgeBase/KnowledgeBaseImage";
+import { router, useLocalSearchParams } from "expo-router";
 
 
-
-const KnowledgeImages = (name) => {
- const route = useRoute();
- const navigation = useNavigation();
-
- // Accessing the params
- const { title } = route.params;
+const KnowledgeData = () => {
+  const { title } = useLocalSearchParams();
+ 
   const addImage = () => {
     console.log("add image");
   };
-
-
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="flex-row gap-14 pl-1 pr-2 pt-6">
         <View className="flex items-center align-middle pb-44">
           <TouchableOpacity
-            onPress={() => router.push("/knowledge")}
+            onPress={() => router.push("/knowledgebase")}
             style={{ paddingLeft: 10 }}
           >
             <Image
@@ -43,11 +43,11 @@ const KnowledgeImages = (name) => {
         </View>
         <View className="flex-1 items-center">
           <TouchableOpacity>
-            {/* //TODO: get somehow the name of the knowlegde base
+            {/* 
             //TODO: + when a user creates a new knowledge base he will be redirected to the screen and this touchable opacity will be 
             //TODO:in focus so that he can name his knowledge base with his desired name + it stays frild that can be edited the name of the knowledge base */}
             {/* <Text>{KnowledgeImages}</Text> */}
-            <Text className="text-white text-2xl">Dataset 1</Text>
+            <Text className="text-white text-2xl">{title}</Text>
           </TouchableOpacity>
         </View>
         <View>
@@ -82,29 +82,28 @@ const KnowledgeImages = (name) => {
           )}
         />
       </View>
-      
-        <TouchableOpacity
-          onPress={addImage}
-          style={{
-            flex: 1,
-            justifyContent: "flex-end",
-            alignItems: "center",
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            marginBottom: 24,
-          }}
-        >
-          <Image
-            source={icons.addPhoto}
-            className="w-14 h-14"
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-     
+
+      <TouchableOpacity
+        onPress={addImage}
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          marginBottom: 24,
+        }}
+      >
+        <Image
+          source={icons.addPhoto}
+          className="w-14 h-14"
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
-export default KnowledgeImages;
+export default KnowledgeData;

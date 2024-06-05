@@ -53,7 +53,7 @@ const TabsLayout = () => {
         />
 
         <Tabs.Screen
-          name="knowledge"
+          name="knowledgebase"
           options={{
             title: "Knowledge",
             headerShown: false,
