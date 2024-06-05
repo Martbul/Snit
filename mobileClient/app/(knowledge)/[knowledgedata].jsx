@@ -3,39 +3,70 @@ import {
   Text,
   Image,
   FlatList,
-  ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import { icons, images } from "../../constants";
-
-import VideoCard from "../../components/VideoCard";
+import { icons } from "../../constants";
 import EmptyState from "../../components/EmptyState";
-
-
 import KnowledgeBaseImage from "../../components/knowledgeBase/KnowledgeBaseImage";
 import { router, useLocalSearchParams } from "expo-router";
 import KnowledgeBaseVideo from "../../components/knowledgeBase/KnowledgeBaseVideo";
-
+import * as DocumentPicker from "expo-document-picker";
+import { AuthContext } from "../../contexts/AuthContext";
+import { addFilesToKnowledgeBase, uploadFileToCloud } from "../../services/knowledgeServices";
 
 const KnowledgeData = () => {
+  const { user, setUser } = useContext(AuthContext);
   const { title } = useLocalSearchParams();
 
-  const [isImagePage, setIsImagesPage] = useState(true)
+  const [isImagePage, setIsImagesPage] = useState(true);
+
+  const [uploading, setUploading] = useState(false);
  
+
+  //TODO: Show user how on many percent his upload in
+  const openPicker = async (selectType) => {
+    const result = await DocumentPicker.getDocumentAsync({
+      type:
+        selectType === "image"
+          ? ["image/*", "image/png"]
+          : ["video/mp4", "video/gif"],
+    });
+    console.log('RESULT',result);
+
+    if (!result.canceled) {
+      if (selectType === "image") {
+       
+        const newImage = await addFilesToKnowledgeBase(
+          result.assets[0],
+          selectType,
+          { creator: user.email },
+          title
+        );
+        //Todo: render list with images
+      }
+      if (selectType === "video") {
+        setForm({ ...form, video: result.assets[0] });
+      }
+    } else {
+      setTimeout(() => {
+        Alert.alert("Canceld", JSON.stringify(result, null, 2));
+      }, 100);
+    }
+  };
+
   const addImage = () => {
     console.log("add image");
   };
-  const addDideo = () => {
+  const addVideo = () => {
     console.log("add image");
   };
 
-
   useEffect(() => {
     //TODO: gett all images and videos and set them in a use  State and show rthem based on isImagePage
-  })
+  });
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="flex-row gap-14 pl-1 pr-2 pt-6">
@@ -117,7 +148,7 @@ const KnowledgeData = () => {
       </View>
 
       <TouchableOpacity
-        onPress={addImage}
+       onPress={() =>openPicker('image')}
         style={{
           flex: 1,
           justifyContent: "flex-end",

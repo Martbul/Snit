@@ -57,10 +57,7 @@ const userEmail = req.body.userEmail
 
 router.post('/createVideo', async (req, res) => {
 const {title, video,thumbnail,prompt,creator} = req.body
-console.log(req.body);
-  console.log(title);
-  console.log(video);
-  console.log(creator);
+
   
   try {
       const createdVideo = await videoService.createVideo(
@@ -70,7 +67,7 @@ console.log(req.body);
         prompt,
         creator
       );
-      console.log(createdVideo);
+    
       res.json(createdVideo);
   } catch (error) {
       console.log('Error: ', error);

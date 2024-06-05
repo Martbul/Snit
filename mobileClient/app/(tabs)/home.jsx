@@ -14,7 +14,7 @@ const Home = () => {
   const {data:posts,refetch} = useFetchVideos(getAllVideos)
   const {data:latestPosts} = useFetchVideos(getLatestVideos)
   const [refreshing, setRefreshing] = useState(false)
- // console.log('latestPosts',latestPosts);
+ 
 
   //when a user pulls down the screen, it will call this function and fetch new videos(like on instagram)
     const onRefresh = async() => {

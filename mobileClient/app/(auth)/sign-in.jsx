@@ -25,7 +25,6 @@ const SignIn = () => {
     try {
       const result = await loginUser(form.email, form.password);
 
-      console.log("result", result);
       setUser(result);
       router.replace("/home");
     } catch (error) {

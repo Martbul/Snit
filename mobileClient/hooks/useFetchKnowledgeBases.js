@@ -10,7 +10,7 @@ const useFetchKnowledgeBases = (fn) => {
 
     try {
       const response = await fn();
-      console.log(response);
+    
       setData(response);
     } catch (error) {
       Alert.alert("Error", error.message);

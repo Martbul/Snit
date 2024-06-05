@@ -27,7 +27,7 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     loadUser();
-    console.log('currentUser',user);
+   
   }, []);
   
 

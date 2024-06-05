@@ -34,7 +34,7 @@ const Knowledge = () => {
   }, []);
 
   const createNewKnowledgeBase = async () => {
-    console.log("sdasda");
+   
     const newKnowledgeBase = await createKnowledgeBase(user.email)
     
    refetch();
@@ -75,7 +75,8 @@ const Knowledge = () => {
             </View>
           )}
           ListEmptyComponent={() => (
-            <EmptyState
+            <EmptyState 
+            
               title="Add knowledge folders"
               // subtitle="Be the first to upload a video"
             />

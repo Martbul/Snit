@@ -11,10 +11,10 @@ export const registerUser = async (username, email, password) => {
 
 
     if (response.error) {
-        console.log('response', response);
+        console.log("error", response);
         throw new Error(response);
     }
-    console.log('response', response);
+   
 
     await AsyncStorage.setItem('user', JSON.stringify(response));
 return response

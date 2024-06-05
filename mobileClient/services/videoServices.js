@@ -7,7 +7,7 @@ export const getAllVideos = async () => {
     );
 
     if (response.error) {
-        console.log('response', response);
+        console.log("error", response);
         throw new Error(response);
     }
 
@@ -21,7 +21,7 @@ export const getLatestVideos = async () => {
     );
 
     if (response.error) {
-        console.log('response', response);
+        console.log("error", response);
         throw new Error(response);
     }
 
@@ -33,7 +33,7 @@ export const searchVideos = async (query) => {
     );
 
     if (response.error) {
-        console.log('response', response);
+        console.log("error", response);
         throw new Error(response);
     }
 
@@ -47,12 +47,11 @@ export const getAllUserVideos = async(userEmail) => {
     );
 
     if (response.error) {
-        console.log('response', response);
+        console.log("error", response);
         throw new Error(response);
     }
    
- //   console.log("UserVideos",response);
-
+ 
     return response
 }
 
@@ -124,7 +123,7 @@ export const createVideo = async (form) => {
 let body = form
     body.video = videoUrl;
       body.thumbnail = thumbnailUrl;
-      console.log('body',body);
+     
 
     
 

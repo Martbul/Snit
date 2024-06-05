@@ -4,12 +4,12 @@ const knowledgeService = require("../services/knowledgeService.js");
 
 router.post("/getAllKnowledgeBases", async (req, res) => {
   const userEmail = req.body.userEmail;
-  console.log(userEmail);
+  
   try {
     const allUserKnowledgeBases = await knowledgeService.allUserKnowledgeBases(
       userEmail
     );
-    console.log(allUserKnowledgeBases);
+   
     res.json(allUserKnowledgeBases);
   } catch (error) {
     const errorMessages = extractErrorMsgs(error);
@@ -24,12 +24,12 @@ module.exports = router;
 
 router.post("/createNewKnowledgeBase", async (req, res) => {
   const creator = req.body.email
-  console.log(creator);
+  
   try {
     const newKnowledgeBase = await knowledgeService.createNewKnowledgeBase(
       creator
     );
-    console.log(newKnowledgeBase);
+    ;
     res.json(newKnowledgeBase);
   } catch (error) {
     const errorMessages = extractErrorMsgs(error);
@@ -37,4 +37,32 @@ router.post("/createNewKnowledgeBase", async (req, res) => {
     return errorMessages;
   }
 });
+
+
+
+
+
+
+
+router.post("/addFilesToKnowledgeBase", async (req, res) => {
+  console.log(req.body);
+  const { fileUrl, creator, title } = req.body;
+  const owner = creator
+  try {
+    const newFileToKnowledgeBase =
+      await knowledgeService.addFileToSelectedKnoledgeBase(
+        title,
+        fileUrl,
+        owner
+      );
+
+    res.json(newFileToKnowledgeBase);
+  } catch (error) {
+    console.log("Error: ", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while creating the video." });
+  }
+});
+
 module.exports = router;

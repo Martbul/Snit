@@ -29,7 +29,7 @@ const KnowledgebaseSchema = new mongoose.Schema(
 
     // images: [ImageSchema], // Define structure for items in the images array
 
-    videos: {
+    docs: {
       type: Array,
     },
 
