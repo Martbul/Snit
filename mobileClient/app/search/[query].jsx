@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { searchVideos } from "../../services/videoServices";
-import useFetchVideos from "../../hooks/useFetchVideos";
+
 import SearchInput from "../../components/SearchInput";
 import EmptyState from '../../components/EmptyState'
 import VideoCard from '../../components/VideoCard'
@@ -12,7 +12,7 @@ import VideoCard from '../../components/VideoCard'
 const Search = () => {
   const { query } = useLocalSearchParams();
   // const { data: posts, refetch } = useFetchVideos(searchVideos(query));
-  const { data: posts, refetch } = useFetchVideos(()=>searchVideos(query));
+  // const { data: posts, refetch } = useFetchVideos(()=>searchVideos(query));
 
   useEffect(() => {
     refetch();

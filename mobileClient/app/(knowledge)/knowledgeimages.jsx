@@ -9,17 +9,37 @@ import EmptyState from "../../components/EmptyState";
 import KnowledgeBaseCard from "../../components/KnowledgeBaseCard";
 import FileCategory from "../../components/FileCategory";
 import KnowledgeBaseImage from "../../components/KnowledgeBaseImage";
+import { router } from "expo-router";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+
 
 const KnowledgeImages = (name) => {
+ const route = useRoute();
+ const navigation = useNavigation();
+
+ // Accessing the params
+ const { title } = route.params;
+  const addImage = () => {
+    console.log("add image");
+  };
+
+
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="flex-row gap-14 pl-1 pr-2 pt-6">
         <View className="flex items-center align-middle pb-44">
-          <Image
-            source={icons.backArrow}
-            className="w-7 h-7"
-            resizeMode="contain"
-          />
+          <TouchableOpacity
+            onPress={() => router.push("/knowledge")}
+            style={{ paddingLeft: 10 }}
+          >
+            <Image
+              source={icons.backArrow}
+              style={{ width: 28, height: 28 }}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
         <View className="flex-1 items-center">
           <TouchableOpacity>
@@ -40,7 +60,7 @@ const KnowledgeImages = (name) => {
           data={[{ id: 1 }, { id: 2 }]}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <View style={{ marginTop:20, marginLeft:10, marginRight:10 }}>
+            <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}>
               <KnowledgeBaseImage item={item} />
             </View>
           )}
@@ -62,24 +82,27 @@ const KnowledgeImages = (name) => {
           )}
         />
       </View>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-end",
-          alignItems: "center",
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          marginBottom: 24,
-        }}
-      >
-        <Image
-          source={icons.addPhoto}
-          className="w-14 h-14"
-          resizeMode="contain"
-        />
-      </View>
+      
+        <TouchableOpacity
+          onPress={addImage}
+          style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            alignItems: "center",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            marginBottom: 24,
+          }}
+        >
+          <Image
+            source={icons.addPhoto}
+            className="w-14 h-14"
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+     
     </SafeAreaView>
   );
 };

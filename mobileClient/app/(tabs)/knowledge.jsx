@@ -1,12 +1,39 @@
-import { View, Text, Image, FlatList, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, FlatList, ScrollView, TouchableOpacity } from 'react-native'
+import React, { useContext, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import SmallSearchInput from '../../components/SmallSeacrhInout';
 import { icons, images } from '../../constants';
-import SearchInput from '../../components/SearchInput';
-import VideoCard from '../../components/VideoCard';
+
 import KnowledgeBaseCard from '../../components/KnowledgeBaseCard';
-const Bookmark = () => {
+import { createKnowledgeBase, getAllKnowledgeBases } from "../../services/knowledgeServices";
+import { AuthContext } from '../../contexts/AuthContext';
+import useFetchKnowledgeBases from '../../hooks/useFetchKnowledgeBases';
+import EmptyState from '../../components/EmptyState';
+
+
+
+const Knowledge = () => {
+  const { user } = useContext(AuthContext);
+ 
+ 
+   const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
+     getAllKnowledgeBases(user.email)
+   );
+
+   // Use an effect to refetch the data whenever the component mounts or the user changes
+   useEffect(() => {
+     refetch();
+   }, []);
+  
+
+  const createNewKnowledgeBase = async() => {
+    
+    console.log('sdasda');
+    const newKnowledgeBase = await createKnowledgeBase(user.email);
+    refetch();
+    //TODO: redirect to the page of the already creaded Kbase
+  };
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="flex-row gap-14 pl-1 pr-2 pt-6">
@@ -23,54 +50,19 @@ const Bookmark = () => {
       </View>
 
       <View className="flex mt-[-140px] mb-[340px]">
-        {/* <ScrollView>
-<FlatList></FlatList>
-        </ScrollView> */}
         <FlatList
           numColumns={2}
           contentContainerStyle={{
             alignItems: "center",
           }}
-          data={[
-            { name: 1 },
-           
-          ]}
+          data={knowledgeBases}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={{ marginLeft: 12, marginRight: 12, marginBottom: 20 }}>
               <KnowledgeBaseCard item={item} />
             </View>
           )}
-          // ListHeaderComponent={() => (
-          //   <View className="my-6 px-4 space-y-6">
-          //     <View className="justify-between items-start flex-row mb-6">
-          //       <View>
-          //         <Text className="font-pmedium text-sm text-gray-100">
-          //           Welcome back,
-          //         </Text>
-          //         <Text className="text-2xl font-psemibold text-white">
-          //          sdsdsa
-          //         </Text>
-          //       </View>
-
-          //       <View className="mt-1.5">
-          //         <Image
-          //           source={images.logoSmall}
-          //           className="w-9 h-10"
-          //           resizeMode="contain"
-          //         />
-          //       </View>
-          //     </View>
-
-          //     <SearchInput></SearchInput>
-          //     <View className="w-full flex-1 pt-5 pb-8">
-          //       <Text className="text-gray-100 text-lg font-pregular mb-3">
-          //         Latest videos
-          //       </Text>
-          //       {/* <Trending posts={latestPosts ?? []} /> */}
-          //     </View>
-          //   </View>
-          // )}
+        
           ListEmptyComponent={() => (
             <EmptyState
               title="Add knowledge folders"
@@ -79,7 +71,9 @@ const Bookmark = () => {
           )}
         />
       </View>
-      <View
+
+      <TouchableOpacity
+        onPress={createNewKnowledgeBase}
         style={{
           flex: 1,
           justifyContent: "flex-end",
@@ -96,9 +90,9 @@ const Bookmark = () => {
           className="w-14 h-14"
           resizeMode="contain"
         />
-      </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
-}
+};
 
-export default Bookmark
+export default Knowledge;

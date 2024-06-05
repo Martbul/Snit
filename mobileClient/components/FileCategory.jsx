@@ -7,7 +7,7 @@ const FileCategory = ({ isSelected, isImage }) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        router.push(isImage ? "/knowledgeimages" : "/knowledgevideo")
+        router.push(isImage ? "/knowledgeimages" : "/knowledgevideos")
       }
       className={`bg-tertiary w-40 h-7 rounded-2xl justify-center items-center ${
         isSelected == true ? "bg-secondary" : ""

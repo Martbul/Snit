@@ -2,45 +2,42 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { icons, images } from "../constants";
 import { router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
-const KnowledgeBaseCard = ({item}) => {
+const KnowledgeBaseCard = ({ item }) => {
+  const navigation = useNavigation();
   return (
-    //  <View className="flex-col items-center px-4 mb-14">
-    //    <View className="flex-row gap-3 items-start">
-    //      <View className="justify-center items-center flex-row flex-1">
-    //        <View className="w-[46px] h-[46px] rounded-lg border border-secondary justify-center items-center p-0.5">
-    //          <Image
-    //            source={images.user}
-    //            className="w-[46px] h-[46px]"
-    //            resizeMode="contain"
-    //          />
-    //        </View>
+    // //TODO: add logic so that use is redirected to the correct dataset
+    // <TouchableOpacity
+    //   className="bg-secondary w-40 h-14 rounded-2xl justify-center items-center"
+    //   onPress={() => router.push("/knowledgeimages")}
+    // >
+    //   <Text className="flex justify-center items-center">{item}</Text>
+    // </TouchableOpacity>
 
-    //        <View className="justify-center flex-1 ml-3 gap-y-1">
-    //          <Text
-    //            className="text-white font-psemibold text-sm"
-    //            numberOfLines={1}
-    //          >
-    //            {title}
-    //          </Text>
-    //          <Text className="text-xs text-gray-100 font-pregular">
-    //            {creator}
-    //          </Text>
-    //        </View>
-    //      </View>
-
-    //      <View className="pt-2 ">
-    //        <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
-    //      </View>
-    //    </View>
-    //  </View>
-
-     //TODO: add logic so that use is redirected to the correct dataset
     <TouchableOpacity
       className="bg-secondary w-40 h-14 rounded-2xl justify-center items-center"
-      onPress={() => router.push("/knowledgeimages")}
+      onPress={() =>
+        navigation.navigate("knowledgeimages", {
+          title: item.title,
+        })
+      }
     >
-      <Text className="flex justify-center items-center">Dataset 1</Text>
+      <Text style={{ fontWeight: "bold", fontSize: 12, color: "white" }}>
+        {item.title}
+      </Text>
+      {/* Render other properties of item as needed */}
+
+      {/* <Text>Created At: {item.createdAt}</Text> */}
+      {/* Render images */}
+      {item.images && item.images.length > 0 && (
+        <Image
+          source={{ uri: item.images[0] }} // Assuming images is an array of URIs
+          style={{ width: 70, height: 70, marginTop: 10 }}
+          resizeMode="contain"
+        />
+      )}
+      {/* Render videos or other properties as needed */}
     </TouchableOpacity>
   );
 };
