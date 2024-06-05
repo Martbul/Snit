@@ -6,26 +6,36 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { icons, images } from "../../constants";
 
 import VideoCard from "../../components/VideoCard";
 import EmptyState from "../../components/EmptyState";
-import KnowledgeBaseCard from "../../components/knowledgeBase/KnowledgeBaseCard";
-import FileCategory from "../../components/FileCategory";
+
+
 import KnowledgeBaseImage from "../../components/knowledgeBase/KnowledgeBaseImage";
 import { router, useLocalSearchParams } from "expo-router";
+import KnowledgeBaseVideo from "../../components/knowledgeBase/KnowledgeBaseVideo";
 
 
 const KnowledgeData = () => {
   const { title } = useLocalSearchParams();
+
+  const [isImagePage, setIsImagesPage] = useState(true)
  
   const addImage = () => {
     console.log("add image");
   };
+  const addDideo = () => {
+    console.log("add image");
+  };
 
+
+  useEffect(() => {
+    //TODO: gett all images and videos and set them in a use  State and show rthem based on isImagePage
+  })
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="flex-row gap-14 pl-1 pr-2 pt-6">
@@ -43,10 +53,6 @@ const KnowledgeData = () => {
         </View>
         <View className="flex-1 items-center">
           <TouchableOpacity>
-            {/* 
-            //TODO: + when a user creates a new knowledge base he will be redirected to the screen and this touchable opacity will be 
-            //TODO:in focus so that he can name his knowledge base with his desired name + it stays frild that can be edited the name of the knowledge base */}
-            {/* <Text>{KnowledgeImages}</Text> */}
             <Text className="text-white text-2xl">{title}</Text>
           </TouchableOpacity>
         </View>
@@ -61,16 +67,43 @@ const KnowledgeData = () => {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}>
-              <KnowledgeBaseImage item={item} />
+              {isImagePage === true ? (
+                <KnowledgeBaseImage item={item} />
+              ) : (
+                <KnowledgeBaseVideo item={item} />
+              )}
             </View>
           )}
           ListHeaderComponent={() => (
             <View className="flex-row gap-4 justify-center items-center mb-6">
               <View>
-                <FileCategory isImage={true} isSelected={true} />
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsImagesPage(true);
+                  }}
+                  className={`bg-tertiary w-40 h-7 rounded-2xl justify-center items-center ${
+                    isImagePage == true ? "bg-secondary" : ""
+                  }`}
+                >
+                  <Text className="flex justify-center items-center text-white">
+                    Images
+                  </Text>
+                </TouchableOpacity>
               </View>
+
               <View>
-                <FileCategory isImage={false} isSelected={false} />
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsImagesPage(false);
+                  }}
+                  className={`bg-tertiary w-40 h-7 rounded-2xl justify-center items-center ${
+                    isImagePage == false ? "bg-secondary" : ""
+                  }`}
+                >
+                  <Text className="flex justify-center items-center text-white">
+                    Videos
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -96,11 +129,19 @@ const KnowledgeData = () => {
           marginBottom: 24,
         }}
       >
-        <Image
-          source={icons.addPhoto}
-          className="w-14 h-14"
-          resizeMode="contain"
-        />
+        {isImagePage === true ? (
+          <Image
+            source={icons.addPhoto}
+            className="w-14 h-14"
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            source={icons.addFolder}
+            className="w-14 h-14"
+            resizeMode="contain"
+          />
+        )}
       </TouchableOpacity>
     </SafeAreaView>
   );
