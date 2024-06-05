@@ -31,7 +31,7 @@ const KnowledgeData = () => {
       type:
         selectType === "image"
           ? ["image/*", "image/png"]
-          : ["video/mp4", "video/gif"],
+          : ["types.pdf", "types.docx"],
     });
     console.log('RESULT',result);
 
@@ -44,23 +44,22 @@ const KnowledgeData = () => {
           { creator: user.email },
           title
         );
+
         //Todo: render list with images
       }
       if (selectType === "video") {
-        setForm({ ...form, video: result.assets[0] });
+         const newDocs = await addFilesToKnowledgeBase(
+           result.assets[0],
+           selectType,
+           { creator: user.email },
+           title
+         );
       }
     } else {
       setTimeout(() => {
         Alert.alert("Canceld", JSON.stringify(result, null, 2));
       }, 100);
     }
-  };
-
-  const addImage = () => {
-    console.log("add image");
-  };
-  const addVideo = () => {
-    console.log("add image");
   };
 
   useEffect(() => {
@@ -148,7 +147,8 @@ const KnowledgeData = () => {
       </View>
 
       <TouchableOpacity
-       onPress={() =>openPicker('image')}
+        
+       onPress={() =>{isImagePage === true ? openPicker("image") : openPicker("docs");}}
         style={{
           flex: 1,
           justifyContent: "flex-end",

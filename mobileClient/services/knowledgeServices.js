@@ -115,10 +115,12 @@ export const addFilesToKnowledgeBase = async (file, selectType, creator, title) 
     if (selectType === "image") {
       const fileUrl = await uploadFileToCloud(file, selectType);
         body = { fileUrl, creator, title };
-      //  const [imageUrl] = await promise.all([uploadFileToCloud(file, selectType)]);
+      
     
      
     } else if (selectType === "docs") {
+      const fileUrl = await uploadFileToCloud(file, selectType);
+         body = { fileUrl, creator, title };
     }
    
     const response = await fetch(

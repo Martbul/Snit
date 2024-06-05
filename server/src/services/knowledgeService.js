@@ -44,7 +44,7 @@ exports.allUserKnowledgeBases = async (userEmail) => {
 
 exports.addFileToSelectedKnoledgeBase = async (title, fileUrl, owner) => {
   try {
-    console.log("CREATOR", owner.creator);
+ 
     const creator = owner.creator;
 
     const knowledgeBase = await Knowledgebase.findOne({
