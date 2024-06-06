@@ -56,7 +56,12 @@ exports.addFileToSelectedKnoledgeBase = async (title, fileUrl, owner) => {
       throw new Error("KnowledgeBase not found or you're not the owner.");
     }
 
-    const fileType = fileUrl.endsWith(".docs") ? "document" : "image";
+    const fileType =
+      fileUrl.includes("/pdf%") ||
+      fileUrl.includes("/docs%") ||
+      fileUrl.includes("/xlsx%")
+        ? "document"
+        : "image";
 
     if (fileType === "image") {
       knowledgeBase.images.push(fileUrl);
@@ -66,6 +71,26 @@ exports.addFileToSelectedKnoledgeBase = async (title, fileUrl, owner) => {
     const updatedKnowledgeBase = await knowledgeBase.save();
 
     return updatedKnowledgeBase;
+  } catch (err) {
+    console.log("err: " + err);
+  }
+};
+
+
+
+
+
+exports.getCurrentKnowledgeBaseImages = async (title, userEmail) => {
+ 
+  try {
+    const knowledgeBase = await Knowledgebase.find({
+      title,
+      creator: userEmail,
+    })
+
+      const allImages = knowledgeBase.flatMap((entry) => entry.images || []);
+      return allImages;
+    
   } catch (err) {
     console.log("err: " + err);
   }

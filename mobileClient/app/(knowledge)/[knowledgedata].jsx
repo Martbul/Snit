@@ -4,6 +4,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,46 +15,45 @@ import { router, useLocalSearchParams } from "expo-router";
 import KnowledgeBaseVideo from "../../components/knowledgeBase/KnowledgeBaseVideo";
 import * as DocumentPicker from "expo-document-picker";
 import { AuthContext } from "../../contexts/AuthContext";
-import { addFilesToKnowledgeBase, uploadFileToCloud } from "../../services/knowledgeServices";
+import {
+  addFilesToKnowledgeBase,
+  getCurrentKnowledgeBaseImages,
+} from "../../services/knowledgeServices";
 
 const KnowledgeData = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { title } = useLocalSearchParams();
 
   const [isImagePage, setIsImagesPage] = useState(true);
+  const [images, setImages] = useState([]);
+  const [docs, setDocs] = useState([]);
 
   const [uploading, setUploading] = useState(false);
- 
 
   //TODO: Show user how on many percent his upload in
   const openPicker = async (selectType) => {
     const result = await DocumentPicker.getDocumentAsync({
-      type:
-        selectType === "image"
-          ? ["image/*", "image/png"]
-          : ["types.pdf", "types.docx"],
+      type: selectType === "image" ? ["image/*"] : ["application/*"],
     });
-    console.log('RESULT',result);
+    console.log("RESULT", result);
 
     if (!result.canceled) {
       if (selectType === "image") {
-       
         const newImage = await addFilesToKnowledgeBase(
           result.assets[0],
           selectType,
           { creator: user.email },
           title
         );
-
-        //Todo: render list with images
+        getCurrentKnowledgeBaseData();
       }
-      if (selectType === "video") {
-         const newDocs = await addFilesToKnowledgeBase(
-           result.assets[0],
-           selectType,
-           { creator: user.email },
-           title
-         );
+      if (selectType === "docs") {
+        const newDocs = await addFilesToKnowledgeBase(
+          result.assets[0],
+          selectType,
+          { creator: user.email },
+          title
+        );
       }
     } else {
       setTimeout(() => {
@@ -62,9 +62,21 @@ const KnowledgeData = () => {
     }
   };
 
+  const getCurrentKnowledgeBaseData = async () => {
+    const currentKnowledgeBaseImages = await getCurrentKnowledgeBaseImages(
+      title,
+      user.email
+    );
+    setImages(currentKnowledgeBaseImages);
+
+    const currentKnowledgeBaseDocs = await getcurrentKnowledgeBaseDocs();
+    setDocs(currentKnowledgeBaseDocs);
+  };
   useEffect(() => {
+    getCurrentKnowledgeBaseData();
+
     //TODO: gett all images and videos and set them in a use  State and show rthem based on isImagePage
-  });
+  }, []);
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -93,7 +105,8 @@ const KnowledgeData = () => {
 
       <View className="flex mt-[-140px] mb-[340px]">
         <FlatList
-          data={[{ id: 1 }, { id: 2 }]}
+          // {isImagePage === true ?   data={images} : data={docs}}
+          data={isImagePage ? images : docs}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}>
@@ -147,8 +160,9 @@ const KnowledgeData = () => {
       </View>
 
       <TouchableOpacity
-        
-       onPress={() =>{isImagePage === true ? openPicker("image") : openPicker("docs");}}
+        onPress={() => {
+          isImagePage === true ? openPicker("image") : openPicker("docs");
+        }}
         style={{
           flex: 1,
           justifyContent: "flex-end",

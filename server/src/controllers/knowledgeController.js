@@ -65,4 +65,26 @@ router.post("/addFilesToKnowledgeBase", async (req, res) => {
   }
 });
 
+
+
+
+router.post("/getCurrentKnowledgeBaseImages", async (req, res) => {
+  const title = req.body.title;
+  const userEmail = req.body.userEmail;
+  try {
+    const currentKnowledgeBaseImages =
+      await knowledgeService.getCurrentKnowledgeBaseImages(title, userEmail);
+    res.json(currentKnowledgeBaseImages);
+  } catch (error) {
+    const errorMessages = extractErrorMsgs(error);
+    console.log("err  " + errorMessages);
+    return errorMessages;
+  }
+});
+
+
+
+
+
+
 module.exports = router;

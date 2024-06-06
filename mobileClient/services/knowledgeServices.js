@@ -148,3 +148,24 @@ export const addFilesToKnowledgeBase = async (file, selectType, creator, title) 
   }
 };
 
+
+
+export const getCurrentKnowledgeBaseImages = async (title,userEmail) => {
+
+  const response = await postRequest(
+    `${baseUrl}/knowledge/getCurrentKnowledgeBaseImages`,
+
+    JSON.stringify({ title, userEmail })
+  );
+
+  if (response.error) {
+    console.log("error", response);
+    throw new Error(response);
+  }
+  console.log("DATA", response);
+
+  return response;
+};
+
+
+
