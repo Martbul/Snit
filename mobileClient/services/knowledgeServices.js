@@ -50,7 +50,7 @@ export const createKnowledgeBase = async (email) => {
 
 
 
-export const uploadFileToCloud = async (file, type) => {
+export const uploadFileToCloud = async (file, type, setProgress) => {
   console.log("uploading files to firebase");
   if (!file) return;
 
@@ -76,7 +76,7 @@ export const uploadFileToCloud = async (file, type) => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        // setProgress(progress);
+        setProgress(progress);
         console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
@@ -110,15 +110,15 @@ export const addFilesToKnowledgeBase = async (
   selectType,
   creator,
   title,
-  
+  setProgress
 ) => {
   try {
     let body;
     if (selectType === "image") {
-      const fileUrl = await uploadFileToCloud(file, selectType);
+      const fileUrl = await uploadFileToCloud(file, selectType, setProgress);
       body = { fileUrl, creator, title };
     } else if (selectType === "docs") {
-      const fileUrl = await uploadFileToCloud(file, selectType);
+      const fileUrl = await uploadFileToCloud(file, selectType, setProgress);
       body = { fileUrl, creator, title };
     }
 
@@ -137,8 +137,10 @@ export const addFilesToKnowledgeBase = async (
 
     if (response.ok) {
       console.log("new video", result);
+      setProgress(null)
       return result;
     } else {
+        setProgress(null);
       console.error("response", result);
       throw new Error(result);
     }

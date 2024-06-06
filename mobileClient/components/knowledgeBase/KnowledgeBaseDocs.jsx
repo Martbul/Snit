@@ -3,12 +3,12 @@ import React from "react";
 import { icons, images } from "../../constants";
 import { router } from "expo-router";
 
-const KnowledgeBaseVideo = ({ item }) => {
+const KnowledgeBaseDocs = ({ item }) => {
   return (
     <View className="bg-white w-full h-14 rounded-xl justify-center items-center">
-      <Text className="">Video 1</Text>
+      <Text className="">{ item}</Text>
     </View>
   );
 };
 
-export default KnowledgeBaseVideo;
+export default KnowledgeBaseDocs;

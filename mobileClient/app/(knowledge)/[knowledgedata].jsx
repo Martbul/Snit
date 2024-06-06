@@ -12,7 +12,6 @@ import { icons } from "../../constants";
 import EmptyState from "../../components/EmptyState";
 import KnowledgeBaseImage from "../../components/knowledgeBase/KnowledgeBaseImage";
 import { router, useLocalSearchParams } from "expo-router";
-import KnowledgeBaseVideo from "../../components/knowledgeBase/KnowledgeBaseVideo";
 import * as DocumentPicker from "expo-document-picker";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
@@ -20,32 +19,33 @@ import {
   getCurrentKnowledgeBaseImages,
   getcurrentKnowledgeBaseDocs,
 } from "../../services/knowledgeServices";
+import KnowledgeBaseDocs from "../../components/knowledgeBase/KnowledgeBaseDocs";
+import * as Progress from "react-native-progress";
 
 const KnowledgeData = () => {
   const { user } = useContext(AuthContext);
   const { title } = useLocalSearchParams();
-// const [progress,setProgress] = useState(null)
+const [progress,setProgress] = useState(null)
   const [isImagePage, setIsImagesPage] = useState(true);
   const [images, setImages] = useState([]);
   const [docs, setDocs] = useState([]);
 
-  const [uploading, setUploading] = useState(false);
-
-  //TODO: Show user how on many percent his upload in
+ 
   const openPicker = async (selectType) => {
     const result = await DocumentPicker.getDocumentAsync({
       type: selectType === "image" ? ["image/*"] : ["application/*"],
     });
-    console.log("RESULT", result);
 
+    
     if (!result.canceled) {
+      //TODo: the logic is the same in the 2 if statements
       if (selectType === "image") {
         const newImage = await addFilesToKnowledgeBase(
           result.assets[0],
           selectType,
           { creator: user.email },
           title,
-        
+          setProgress
         );
         getCurrentKnowledgeBaseData();
       }
@@ -54,9 +54,10 @@ const KnowledgeData = () => {
           result.assets[0],
           selectType,
           { creator: user.email },
-          title
+          title,
+          setProgress
         );
-          getCurrentKnowledgeBaseData();
+        getCurrentKnowledgeBaseData();
       }
     } else {
       setTimeout(() => {
@@ -69,6 +70,7 @@ const KnowledgeData = () => {
     const currentKnowledgeBaseImages = await getCurrentKnowledgeBaseImages(
       title,
       user.email
+      
     );
     setImages(currentKnowledgeBaseImages);
 
@@ -78,10 +80,10 @@ const KnowledgeData = () => {
     );
     setDocs(currentKnowledgeBaseDocs);
   };
+
+
   useEffect(() => {
     getCurrentKnowledgeBaseData();
-
-    //TODO: gett all images and videos and set them in a use  State and show rthem based on isImagePage
   }, []);
 
   return (
@@ -109,17 +111,20 @@ const KnowledgeData = () => {
         </View>
       </View>
 
-      <View className="flex mt-[-140px] mb-[340px]">
+      <View className="flex mt-[-140px] mb-[315px]">
         <FlatList
-          // {isImagePage === true ?   data={images} : data={docs}}
+          // numColumns={2}
+          // contentContainerStyle={{
+          //   alignItems: "center",
+          // }}
           data={isImagePage ? images : docs}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <View style={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}>
+            <View className="mb-1">
               {isImagePage === true ? (
                 <KnowledgeBaseImage item={item} />
               ) : (
-                <KnowledgeBaseVideo item={item} />
+                <KnowledgeBaseDocs item={item} />
               )}
             </View>
           )}
@@ -140,7 +145,7 @@ const KnowledgeData = () => {
                     ) : (
                       <KnowledgeBaseVideo item={item} />
                     )} */}
-                    images
+                    Images
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -155,7 +160,7 @@ const KnowledgeData = () => {
                   }`}
                 >
                   <Text className="flex justify-center items-center text-white">
-                    Videos
+                    Documents
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -163,15 +168,37 @@ const KnowledgeData = () => {
           )}
           ListEmptyComponent={() => (
             <EmptyState
-              title="Add images"
-              subtitle="Import images to your dataset for car-value evaluation"
+              subtitle={
+                isImagePage === true
+                  ? "Add images to your dataset for car-value evaluation"
+                  : "Add documents to your dataset for car-value evaluation"
+              }
             />
           )}
         />
       </View>
-      {/* <View>
-        <Text>{progress}</Text>
-      </View> */}
+      <View
+        className="flex justify-center items-center"
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          marginBottom: 100,
+        }}
+      >
+        {/* // <Text className="text-white text-2xl justify-center">{progress}</Text> */}
+        { progress !== null? ( <Progress.Circle
+          size={100}
+          showsText={true}
+          progress={progress}
+          thickness={6}
+        />) : null}
+       
+      </View>
 
       <TouchableOpacity
         onPress={() => {
@@ -185,7 +212,7 @@ const KnowledgeData = () => {
           bottom: 0,
           left: 0,
           right: 0,
-          marginBottom: 24,
+          marginBottom: 16,
         }}
       >
         {isImagePage === true ? (
