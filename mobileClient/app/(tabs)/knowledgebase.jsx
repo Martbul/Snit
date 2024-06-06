@@ -1,16 +1,21 @@
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
   Image,
   FlatList,
-  ScrollView,
   TouchableOpacity,
+  Animated,
+  Dimensions,
+  StyleSheet,
+  Modal,
+  Easing,
+  Platform,
 } from "react-native";
-import React, { useContext, useEffect } from "react";
+import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import SmallSearchInput from "../../components/singleUIElements/SmallSeacrhInput";
-import { icons, images } from "../../constants";
-
+import { icons } from "../../constants";
 import KnowledgeBaseCard from "../../components/knowledgeBase/KnowledgeBaseCard";
 import {
   createKnowledgeBase,
@@ -19,87 +24,115 @@ import {
 import { AuthContext } from "../../contexts/AuthContext";
 import useFetchKnowledgeBases from "../../hooks/useFetchKnowledgeBases";
 import EmptyState from "../../components/EmptyState";
-import { router } from "expo-router";
+import styles from "../../assets/css/knowledgebase/knowledgebase";
 
 const Knowledge = () => {
   const { user } = useContext(AuthContext);
-
   const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
     getAllKnowledgeBases(user.email)
   );
 
-  // Use an effect to refetch the data whenever the component mounts or the user changes
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const sidebarWidth = Dimensions.get("window").width * 0.82;
+  const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
+
   useEffect(() => {
     refetch();
   }, []);
 
-  const createNewKnowledgeBase = async () => {
-   
-    const newKnowledgeBase = await createKnowledgeBase(user.email)
-    
-   refetch();
+  const toggleSidebar = () => {
+    if (isSidebarVisible) {
+      Animated.timing(sidebarAnim, {
+        toValue: -sidebarWidth,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }).start(() => setIsSidebarVisible(false));
+    } else {
+      setIsSidebarVisible(true);
+      Animated.timing(sidebarAnim, {
+        toValue: 0,
+        duration: 300,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }).start();
+    }
+  };
 
-     router.push({
-       pathname: "/(knowledge)/[knowledgedata]",
-       params: { title: newKnowledgeBase.title },
-     });
-    //TODO: redirect to the page of the already creaded Kbase
+  const createNewKnowledgeBase = async () => {
+    const newKnowledgeBase = await createKnowledgeBase(user.email);
+    refetch();
+    router.push({
+      pathname: "/(knowledge)/[knowledgedata]",
+      params: { title: newKnowledgeBase.title },
+    });
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
-      <View className="flex-row gap-14 pl-1 pr-2 pt-6">
-        <View className="flex items-center align-middle pb-44">
+    <SafeAreaView style={styles.container} className="bg-primary h-full">
+      <View style={styles.header}>
+        <TouchableOpacity onPress={toggleSidebar}>
           <Image
             source={icons.menuhamburger}
-            className="w-12 h-12"
+            style={styles.hamburgerIcon}
             resizeMode="contain"
           />
-        </View>
-        <View className="flex-1">
+        </TouchableOpacity>
+        {/* //TODO: Implement search for knowledgebase */}
+        <View style={styles.searchContainer}>
           <SmallSearchInput />
         </View>
       </View>
 
-      <View className="flex mt-[-140px] mb-[340px]">
+      {isSidebarVisible && (
+        <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>
+          <Animated.View
+            style={[
+              styles.sidebar,
+              { transform: [{ translateX: sidebarAnim }], width: sidebarWidth },
+            ]}
+          >
+            <Text style={styles.sidebarTitle}>Menu</Text>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuItemText}>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuItemText}>Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuItemText}>Settings</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text style={styles.menuItemText}>Help</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        </TouchableOpacity>
+      )}
+
+      <View style={styles.contentContainer}>
         <FlatList
           numColumns={2}
-          contentContainerStyle={{
-            alignItems: "center",
-          }}
+          contentContainerStyle={styles.flatListContainer}
           data={knowledgeBases}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
-            <View style={{ marginLeft: 12, marginRight: 12, marginBottom: 20 }}>
+            <View style={styles.cardContainer}>
               <KnowledgeBaseCard item={item} />
             </View>
           )}
           ListEmptyComponent={() => (
-            <EmptyState 
-            
-              title="Add knowledge folders"
-              // subtitle="Be the first to upload a video"
-            />
+            <EmptyState title="Add knowledge folders" />
           )}
         />
       </View>
 
       <TouchableOpacity
         onPress={createNewKnowledgeBase}
-        style={{
-          flex: 1,
-          justifyContent: "flex-end",
-          alignItems: "center",
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          marginBottom: 24,
-        }}
+        style={styles.floatingButton}
       >
         <Image
           source={icons.plusBig}
-          className="w-14 h-14"
+          style={styles.plusIcon}
           resizeMode="contain"
         />
       </TouchableOpacity>
@@ -108,3 +141,4 @@ const Knowledge = () => {
 };
 
 export default Knowledge;
+

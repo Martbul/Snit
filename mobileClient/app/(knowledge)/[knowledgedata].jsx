@@ -118,7 +118,7 @@ const [progress,setProgress] = useState(null)
           //   alignItems: "center",
           // }}
           data={isImagePage ? images : docs}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <View className="mb-1">
               {isImagePage === true ? (
@@ -150,11 +150,6 @@ const [progress,setProgress] = useState(null)
                   }`}
                 >
                   <Text className="flex justify-center items-center text-white">
-                    {/* {isImagePage === true ? (
-                      <KnowledgeBaseImage item={item} />
-                    ) : (
-                      <KnowledgeBaseVideo item={item} />
-                    )} */}
                     Images
                   </Text>
                 </TouchableOpacity>
