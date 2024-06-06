@@ -18,12 +18,13 @@ import { AuthContext } from "../../contexts/AuthContext";
 import {
   addFilesToKnowledgeBase,
   getCurrentKnowledgeBaseImages,
+  getcurrentKnowledgeBaseDocs,
 } from "../../services/knowledgeServices";
 
 const KnowledgeData = () => {
   const { user } = useContext(AuthContext);
   const { title } = useLocalSearchParams();
-
+// const [progress,setProgress] = useState(null)
   const [isImagePage, setIsImagesPage] = useState(true);
   const [images, setImages] = useState([]);
   const [docs, setDocs] = useState([]);
@@ -43,7 +44,8 @@ const KnowledgeData = () => {
           result.assets[0],
           selectType,
           { creator: user.email },
-          title
+          title,
+        
         );
         getCurrentKnowledgeBaseData();
       }
@@ -54,6 +56,7 @@ const KnowledgeData = () => {
           { creator: user.email },
           title
         );
+          getCurrentKnowledgeBaseData();
       }
     } else {
       setTimeout(() => {
@@ -69,7 +72,10 @@ const KnowledgeData = () => {
     );
     setImages(currentKnowledgeBaseImages);
 
-    const currentKnowledgeBaseDocs = await getcurrentKnowledgeBaseDocs();
+    const currentKnowledgeBaseDocs = await getcurrentKnowledgeBaseDocs(
+      title,
+      user.email
+    );
     setDocs(currentKnowledgeBaseDocs);
   };
   useEffect(() => {
@@ -129,7 +135,12 @@ const KnowledgeData = () => {
                   }`}
                 >
                   <Text className="flex justify-center items-center text-white">
-                    Images
+                    {/* {isImagePage === true ? (
+                      <KnowledgeBaseImage item={item} />
+                    ) : (
+                      <KnowledgeBaseVideo item={item} />
+                    )} */}
+                    images
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -158,6 +169,9 @@ const KnowledgeData = () => {
           )}
         />
       </View>
+      {/* <View>
+        <Text>{progress}</Text>
+      </View> */}
 
       <TouchableOpacity
         onPress={() => {

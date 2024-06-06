@@ -76,6 +76,7 @@ export const uploadFileToCloud = async (file, type) => {
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        // setProgress(progress);
         console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
@@ -104,25 +105,23 @@ export const uploadFileToCloud = async (file, type) => {
 
 
 
-export const addFilesToKnowledgeBase = async (file, selectType, creator, title) => {
-  console.log(file, selectType);
+export const addFilesToKnowledgeBase = async (
+  file,
+  selectType,
+  creator,
+  title,
+  
+) => {
   try {
-    // const [thumbnailUrl, videoUrl] = await Promise.all([
-    //   uploadFileToCloud(form.thumbnail, "image"),
-    //   uploadFileToCloud(form.video, "video"),
-    // ]);
-    let body
+    let body;
     if (selectType === "image") {
       const fileUrl = await uploadFileToCloud(file, selectType);
-        body = { fileUrl, creator, title };
-      
-    
-     
+      body = { fileUrl, creator, title };
     } else if (selectType === "docs") {
       const fileUrl = await uploadFileToCloud(file, selectType);
-         body = { fileUrl, creator, title };
+      body = { fileUrl, creator, title };
     }
-   
+
     const response = await fetch(
       `${baseUrl}/knowledge/addFilesToKnowledgeBase`,
       {
@@ -154,6 +153,22 @@ export const getCurrentKnowledgeBaseImages = async (title,userEmail) => {
 
   const response = await postRequest(
     `${baseUrl}/knowledge/getCurrentKnowledgeBaseImages`,
+
+    JSON.stringify({ title, userEmail })
+  );
+
+  if (response.error) {
+    console.log("error", response);
+    throw new Error(response);
+  }
+  console.log("DATA", response);
+
+  return response;
+};
+
+export const getcurrentKnowledgeBaseDocs = async (title, userEmail) => {
+  const response = await postRequest(
+    `${baseUrl}/knowledge/getCurrentKnowledgeBaseDocs`,
 
     JSON.stringify({ title, userEmail })
   );

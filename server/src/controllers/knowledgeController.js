@@ -84,6 +84,22 @@ router.post("/getCurrentKnowledgeBaseImages", async (req, res) => {
 
 
 
+router.post("/getCurrentKnowledgeBaseDocs", async (req, res) => {
+  const title = req.body.title;
+  const userEmail = req.body.userEmail;
+  try {
+    const currentKnowledgeBaseDocs =
+      await knowledgeService.getCurrentKnowledeBaseDocs(title, userEmail);
+    res.json(currentKnowledgeBaseDocs);
+  } catch (error) {
+    const errorMessages = extractErrorMsgs(error);
+    console.log("err  " + errorMessages);
+    return errorMessages;
+  }
+});
+
+
+
 
 
 

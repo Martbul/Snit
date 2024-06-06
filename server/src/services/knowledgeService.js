@@ -10,14 +10,13 @@ exports.createNewKnowledgeBase = async (creator) => {
       newKnowledgeBaseName = `untitledbase${existingKnowledgeBases.length + 1}`;
     }
 
-    // Create the new knowledge base with the determined name
     const newKnowledgeBase = new Knowledgebase({
       title: newKnowledgeBaseName,
       creator,
     });
     await newKnowledgeBase.save();
 
-    // const newKnowledgeBase = await Knowledgebase
+ 
     return newKnowledgeBase;
   } catch (error) {
     console.error("Failed to fetch videos:", error);
@@ -91,6 +90,19 @@ exports.getCurrentKnowledgeBaseImages = async (title, userEmail) => {
       const allImages = knowledgeBase.flatMap((entry) => entry.images || []);
       return allImages;
     
+  } catch (err) {
+    console.log("err: " + err);
+  }
+};
+exports.getCurrentKnowledeBaseDocs = async (title, userEmail) => {
+  try {
+    const knowledgeBase = await Knowledgebase.find({
+      title,
+      creator: userEmail,
+    });
+
+    const allDocs = knowledgeBase.flatMap((entry) => entry.docs || []);
+    return allDocs;
   } catch (err) {
     console.log("err: " + err);
   }
