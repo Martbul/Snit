@@ -111,7 +111,7 @@ const [progress,setProgress] = useState(null)
         </View>
       </View>
 
-      <View className="flex mt-[-140px] mb-[315px]">
+      <View className="flex mt-[-160px] mb-[220px]">
         <FlatList
           // numColumns={2}
           // contentContainerStyle={{
