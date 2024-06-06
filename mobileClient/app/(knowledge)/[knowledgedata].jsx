@@ -129,7 +129,12 @@ const [progress,setProgress] = useState(null)
                   getCurrentKnowledgeBaseData={getCurrentKnowledgeBaseData}
                 />
               ) : (
-                <KnowledgeBaseDocs item={item} />
+                <KnowledgeBaseDocs
+                  item={item}
+                  knowledgeBaseTitle={title}
+                  creator={user.email}
+                  getCurrentKnowledgeBaseData={getCurrentKnowledgeBaseData}
+                />
               )}
             </View>
           )}

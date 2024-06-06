@@ -5,6 +5,7 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  deleteObject,
 } from "firebase/storage";
 
 
@@ -188,13 +189,34 @@ export const getcurrentKnowledgeBaseDocs = async (title, userEmail) => {
 
 
 
-//todo images are now successfuly deletef rom mongodb , bu you should also delete them from firebase storage cloud + re-render when deleted
-export const deleteFileFromCurrentKnowledgeBase = async (
-  fileFirebaseUrl,
-  knowledgeBaseTitle,
-  creator
-) => {
-  const response = await postRequest(
+
+export const deleteFileFromCloud = async (downloadURL) => {
+  try {
+    const url = new URL(downloadURL);
+    const path = decodeURIComponent(url.pathname.split("/o/")[1].split("?")[0]);
+
+    // Create a reference to the file in Firebase Storage
+    const storage = getStorage();
+    const storageRef = ref(storage, path);
+
+    // Delete the file
+    await deleteObject(storageRef);
+
+    console.log("File deleted successfully");
+  } catch (error) {
+    console.error("Error deleting file:", error);
+    throw error;
+  }
+};
+
+
+
+export const deleteFileFromCurrentKnowledgeBase = async (fileFirebaseUrl, knowledgeBaseTitle, creator) => {
+  try {
+
+
+
+    const response = await postRequest(
     `${baseUrl}/knowledge/deleteFileFromCurrentKnowledgeBase`,
 
     JSON.stringify({ fileFirebaseUrl, knowledgeBaseTitle, creator })
@@ -204,7 +226,11 @@ export const deleteFileFromCurrentKnowledgeBase = async (
     console.log("error", response);
     throw new Error(response);
   }
-  console.log("DATA", response);
+  await deleteFileFromCloud(fileFirebaseUrl);
 
   return response;
+  } catch (error) {
+    console.log(error);
+  }
+  
 };

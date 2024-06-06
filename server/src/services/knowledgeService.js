@@ -137,7 +137,10 @@ exports.deleteFileFromCurrentKnowledgeBase = async (
     
 
    const isImage = fileFirebaseUrl.includes("/images%");
-    const isDocument = /\.(xlsx|doc|docx|pdf)$/i.test(fileFirebaseUrl);
+    const isDocument =
+      fileFirebaseUrl.includes("/docs%") ||
+      fileFirebaseUrl.includes("/xlsx%") ||
+      fileFirebaseUrl.includes("/pdf%");
     
     if (!isImage && !isDocument) {
       throw new Error("Invalid file type.");

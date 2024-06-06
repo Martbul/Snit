@@ -19,6 +19,7 @@ import backArrow from "../assets/icons/backArrow.png";
 import dots from "../assets/icons/dots.png";
 import addFolder from "../assets/icons/addFolder.png";
 import addPhoto from "../assets/icons/addPhoto.png";
+import dotsBlack from "../assets/icons/dotsBlack.png";
 
 export default {
   play,
@@ -42,4 +43,5 @@ export default {
   addFolder,
   addPhoto,
   dots,
+  dotsBlack,
 };
