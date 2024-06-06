@@ -186,3 +186,25 @@ export const getcurrentKnowledgeBaseDocs = async (title, userEmail) => {
 
 
 
+
+
+//todo images are now successfuly deletef rom mongodb , bu you should also delete them from firebase storage cloud + re-render when deleted
+export const deleteFileFromCurrentKnowledgeBase = async (
+  fileFirebaseUrl,
+  knowledgeBaseTitle,
+  creator
+) => {
+  const response = await postRequest(
+    `${baseUrl}/knowledge/deleteFileFromCurrentKnowledgeBase`,
+
+    JSON.stringify({ fileFirebaseUrl, knowledgeBaseTitle, creator })
+  );
+
+  if (response.error) {
+    console.log("error", response);
+    throw new Error(response);
+  }
+  console.log("DATA", response);
+
+  return response;
+};

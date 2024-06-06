@@ -98,6 +98,28 @@ router.post("/getCurrentKnowledgeBaseDocs", async (req, res) => {
   }
 });
 
+router.post("/deleteFileFromCurrentKnowledgeBase",
+  async (req, res) => {
+    try {
+      const fileFirebaseUrl = req.body.fileFirebaseUrl;
+      const knowledgeBaseTitle = req.body.knowledgeBaseTitle;
+      const creator = req.body.creator;
+    
+      
+      const successfilDelete = await knowledgeService.deleteFileFromCurrentKnowledgeBase(
+          fileFirebaseUrl,
+          knowledgeBaseTitle,
+          creator
+        );
+       res.json(successfilDelete);
+    } catch (error) {
+      const errorMessages = extractErrorMsgs(error);
+      console.log("err  " + errorMessages);
+      return errorMessages;
+    }
+  }
+);
+
 
 
 

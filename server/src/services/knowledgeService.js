@@ -107,3 +107,60 @@ exports.getCurrentKnowledeBaseDocs = async (title, userEmail) => {
     console.log("err: " + err);
   }
 };
+
+
+
+
+
+
+
+exports.deleteFileFromCurrentKnowledgeBase = async (
+  fileFirebaseUrl,
+  knowledgeBaseTitle,
+  creator
+) => {
+  try {
+    console.log(fileFirebaseUrl);
+    console.log(knowledgeBaseTitle);
+    console.log(creator);
+    const knowledgeBase = await Knowledgebase.findOne({
+      title: knowledgeBaseTitle,
+      creator,
+    });
+    console.log(knowledgeBase);
+
+    if (!knowledgeBase) {
+      throw new Error("Knowledge base not found.");
+    }
+
+    
+    
+
+   const isImage = fileFirebaseUrl.includes("/images%");
+    const isDocument = /\.(xlsx|doc|docx|pdf)$/i.test(fileFirebaseUrl);
+    
+    if (!isImage && !isDocument) {
+      throw new Error("Invalid file type.");
+    }
+
+    // Remove the file from the appropriate array
+    if (isImage) {
+      knowledgeBase.images = knowledgeBase.images.filter(
+        (image) => image !== fileFirebaseUrl
+      );
+    } else if (isDocument) {
+      knowledgeBase.docs = knowledgeBase.docs.filter(
+        (doc) => doc !== fileFirebaseUrl
+      );
+    }
+
+    // Save the updated knowledgeBase
+    await knowledgeBase.save();
+
+    return knowledgeBase; // Return the updated knowledgeBase
+
+
+  } catch (err) {
+    console.log("err: " + err);
+  }
+};

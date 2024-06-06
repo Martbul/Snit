@@ -122,7 +122,12 @@ const [progress,setProgress] = useState(null)
           renderItem={({ item }) => (
             <View className="mb-1">
               {isImagePage === true ? (
-                <KnowledgeBaseImage item={item} />
+                <KnowledgeBaseImage
+                  item={item}
+                  knowledgeBaseTitle={title}
+                  creator={user.email}
+                  getCurrentKnowledgeBaseData={getCurrentKnowledgeBaseData}
+                />
               ) : (
                 <KnowledgeBaseDocs item={item} />
               )}
@@ -191,13 +196,14 @@ const [progress,setProgress] = useState(null)
         }}
       >
         {/* // <Text className="text-white text-2xl justify-center">{progress}</Text> */}
-        { progress !== null? ( <Progress.Circle
-          size={100}
-          showsText={true}
-          progress={progress}
-          thickness={6}
-        />) : null}
-       
+        {progress !== null ? (
+          <Progress.Circle
+            size={100}
+            showsText={true}
+            progress={progress}
+            thickness={6}
+          />
+        ) : null}
       </View>
 
       <TouchableOpacity
