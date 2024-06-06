@@ -46,10 +46,10 @@ const Home = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <View>
+      <View className='flex-row'>
         <TouchableOpacity onPress={toggleSidebar}>
           <Image
-            source={icons.menuhamburger}
+            source={icons.hamburger}
             style={styles.hamburgerIcon}
             resizeMode="contain"
           />
@@ -61,7 +61,7 @@ const Home = () => {
         <Text className="text-white">Dashboard</Text>
         <Text className="text-white">Dummy text</Text>
       </View>
-      <View>
+      <View className="bg-secondary rounded-t-xl">
         <View>
           <View>
             <Image />

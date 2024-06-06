@@ -73,7 +73,7 @@ const Knowledge = () => {
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleSidebar}>
           <Image
-            source={icons.menuhamburger}
+            source={icons.hamburger}
             style={styles.hamburgerIcon}
             resizeMode="contain"
           />

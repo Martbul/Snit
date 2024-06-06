@@ -20,6 +20,7 @@ import dots from "../assets/icons/dots.png";
 import addFolder from "../assets/icons/addFolder.png";
 import addPhoto from "../assets/icons/addPhoto.png";
 import dotsBlack from "../assets/icons/dotsBlack.png";
+import hamburger from "../assets/icons/hamburger.png";
 
 export default {
   play,
@@ -44,4 +45,5 @@ export default {
   addPhoto,
   dots,
   dotsBlack,
+  hamburger,
 };
