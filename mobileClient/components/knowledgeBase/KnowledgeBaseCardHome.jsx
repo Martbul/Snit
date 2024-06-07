@@ -1,19 +1,20 @@
 import { Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { router } from "expo-router";
+import { KnowledgeBaseContext } from "../../contexts/KnowledgeBaseContext";
 
-const KnowledgeBaseCardHome = ({ item }) => {
-    const {
-      allUserKnowledgeBases,
-      selectedKnowedgeBase,
-      selectedKBimages,
-      selectedKBdocuments,
-    } = useContext(KnowledgeBaseContext);
+const KnowledgeBaseCardHome = ({ item,setSelectedKnowedgeBase }) => {
+    // const {
+    //   allUserKnowledgeBases,
+    //   selectedKnowedgeBase,
+    //   selectedKBimages,
+    //   selectedKBdocuments,
+    // } = useContext(KnowledgeBaseContext);
   return (
     <>
       <TouchableOpacity
         className="bg-secondary w-40 h-14 rounded-2xl justify-center items-center"
-        onPress={() => selectedKnowedgeBase(item.title)}
+        onPress={() => setSelectedKnowedgeBase(item.title)}
       >
         <Text style={{ fontWeight: "bold", fontSize: 12, color: "white" }}>
           {item.title}

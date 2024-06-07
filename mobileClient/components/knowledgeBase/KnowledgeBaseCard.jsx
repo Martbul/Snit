@@ -7,7 +7,7 @@ const KnowledgeBaseCard = ({ item }) => {
   return (
     <>
       <TouchableOpacity
-        className="bg-green w-40 h-14 rounded-2xl justify-center items-center"
+        className="bg-secondary w-40 h-14 rounded-2xl justify-center items-center"
         onPress={() =>
           router.push({
             pathname: "/(knowledge)/[knowledgedata]",

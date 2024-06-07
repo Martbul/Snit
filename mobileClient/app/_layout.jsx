@@ -31,7 +31,7 @@ const RootLayout = () => {
 
   return (
     <AuthContextProvider>
-      <KnowledgeBaseContextProvider>
+      {/* <KnowledgeBaseContextProvider> */}
 
           <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -41,7 +41,7 @@ const RootLayout = () => {
         <Stack.Screen name="(offerandfixes)"options={{ headerShown: false }} />
         <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
       </Stack>
-      </KnowledgeBaseContextProvider>
+      {/* </KnowledgeBaseContextProvider> */}
     
     </AuthContextProvider>
   );

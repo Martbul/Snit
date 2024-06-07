@@ -17,25 +17,39 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../contexts/AuthContext";
 import { icons, images } from "../../constants";
 import styles from "../../assets/css/knowledgebase/knowledgebase";
-import { KnowledgeBaseContext } from "../../contexts/KnowledgeBaseContext";
+// import { KnowledgeBaseContext } from "../../contexts/KnowledgeBaseContext";
 import CustomButton from "../../components/singleUIElements/CustomButton";
 import { router } from "expo-router";
 import KnowledgeBaseCardHome from "../../components/knowledgeBase/KnowledgeBaseCardHome";
+import { getAllKnowledgeBases } from "../../services/knowledgeServices";
+import useFetchKnowledgeBases from "../../hooks/useFetchKnowledgeBases";
+import SelectedKnowledgeBase from "../../components/SelectedKnowledgeBase";
 
 const Home = () => {
-  const { user, setUser } = useContext(AuthContext);
-  const {
-    allUserKnowledgeBases, selectedKnowedgeBase,
-    selectedKBimages,
-    selectedKBdocuments,
-  } = useContext(KnowledgeBaseContext);
+  const { user } = useContext(AuthContext);
+  const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
+     getAllKnowledgeBases(user?.email))
+
+  const [selectedKnowedgeBase, setSelectedKnowedgeBase] = useState(null);
+
+  const [selectedKBimages, setSelectedKBimages] = useState(null);
+  const [selectedKBdocuments, setSelectedKBdocuments] = useState(null);
+
+  useEffect(() => {
+    refetch();
+  }, []);
+  // const {
+  //   allUserKnowledgeBases, selectedKnowedgeBase,
+  //   selectedKBimages,
+  //   selectedKBdocuments,
+  // } = useContext(KnowledgeBaseContext);
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const sidebarWidth = Dimensions.get("window").width * 0.82;
   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
   const toggleSidebar = () => {
-    console.log(allUserKnowledgeBases);
+   
     if (isSidebarVisible) {
       Animated.timing(sidebarAnim, {
         toValue: -sidebarWidth,
@@ -70,7 +84,7 @@ const Home = () => {
         </View>
       </View>
       <View>
-        {allUserKnowledgeBases == [] ? (
+        {knowledgeBases == undefined && selectedKnowedgeBase === null ? (
           <>
             <View className="flex flex-col justify-center items-center">
               <Image source={images.FilesSearching} className="w-60 h-60" />
@@ -95,18 +109,23 @@ const Home = () => {
               <FlatList
                 numColumns={2}
                 contentContainerStyle={styles.flatListContainer}
-                data={allUserKnowledgeBases}
+                data={knowledgeBases}
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                   <View style={styles.cardContainer}>
-                    <KnowledgeBaseCardHome item={item} />
+                    <KnowledgeBaseCardHome item={item} setSelectedKnowedgeBase={setSelectedKnowedgeBase} />
                   </View>
                 )}
-               
               />
             </View>
           </View>
         )}
+
+          {selectedKnowedgeBase !== null ? (
+          <SelectedKnowledgeBase selectedKB={selectedKnowedgeBase}>
+            
+          </SelectedKnowledgeBase>
+        ) : ''}
       </View>
       {isSidebarVisible && (
         <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>

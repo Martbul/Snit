@@ -14,7 +14,7 @@ const CarBrandCard = ({ item }) => {
         //   })
         // }
       >
-        <Text style={{ fontWeight: "bold", fontSize: 12, color: "white" }}>
+        <Text style={{ fontWeight: "bold", fontSize: 16, color: "white" }}>
           {item}
         </Text>
       </TouchableOpacity>

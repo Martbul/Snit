@@ -41,7 +41,7 @@ const CarSpecs = () => {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <Text className="text-white text-2xl">Car Brands</Text>
+        <Text className="text-white text-2xl">Specs</Text>
         <View>
           <Image source={icons.profile} className="w-8 h-8" />
         </View>
