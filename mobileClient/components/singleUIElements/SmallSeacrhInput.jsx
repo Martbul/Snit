@@ -16,7 +16,7 @@ const SmallSearchInput = ({ initialQuery }) => {
   const pathname = usePathname();
   const [query, setQuery] = useState(initialQuery || "");
   return (
-    <View className="h-10 px-4 bg-tertiary rounded-2xl border-2 border-tertiary focus:border-secondary flex flex-row items-center space-x-4">
+    <View className="h-10 px-4 bg-secondary rounded-2xl border-2 border-secondary focus:border-white flex flex-row items-center space-x-4">
       <TextInput
         className="text-base mt-0.5 text-white flex-1 font-pregular"
         value={query}

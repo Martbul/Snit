@@ -15,17 +15,27 @@ import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AuthContext } from "../../contexts/AuthContext";
-import { icons } from "../../constants";
+import { icons, images } from "../../constants";
 import styles from "../../assets/css/knowledgebase/knowledgebase";
+import { KnowledgeBaseContext } from "../../contexts/KnowledgeBaseContext";
+import CustomButton from "../../components/singleUIElements/CustomButton";
+import { router } from "expo-router";
+import KnowledgeBaseCardHome from "../../components/knowledgeBase/KnowledgeBaseCardHome";
 
 const Home = () => {
   const { user, setUser } = useContext(AuthContext);
+  const {
+    allUserKnowledgeBases, selectedKnowedgeBase,
+    selectedKBimages,
+    selectedKBdocuments,
+  } = useContext(KnowledgeBaseContext);
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const sidebarWidth = Dimensions.get("window").width * 0.82;
   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
   const toggleSidebar = () => {
+    console.log(allUserKnowledgeBases);
     if (isSidebarVisible) {
       Animated.timing(sidebarAnim, {
         toValue: -sidebarWidth,
@@ -46,40 +56,57 @@ const Home = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <View className='flex-row'>
+      <View className="flex-row justify-between mt-5 mx-2.5">
         <TouchableOpacity onPress={toggleSidebar}>
           <Image
             source={icons.hamburger}
             style={styles.hamburgerIcon}
             resizeMode="contain"
           />
-          <Text className="text-white">sdsd</Text>
         </TouchableOpacity>
-        <View></View>
+        <Text className="text-white text-2xl">Dashboard</Text>
+        <View>
+          <Image source={icons.profile} className="w-8 h-8" />
+        </View>
       </View>
       <View>
-        <Text className="text-white">Dashboard</Text>
-        <Text className="text-white">Dummy text</Text>
-      </View>
-      <View className="bg-secondary rounded-t-xl">
-        <View>
+        {allUserKnowledgeBases == [] ? (
+          <>
+            <View className="flex flex-col justify-center items-center">
+              <Image source={images.FilesSearching} className="w-60 h-60" />
+              <Text className="text-white text-xl">
+                Create your firts knowedgebase
+              </Text>
+              <CustomButton
+                title="Create Knowledge Base"
+                handlePress={router.push("/knowledgebase")}
+                containerStyles="mt-7"
+              />
+            </View>
+          </>
+        ) : (
           <View>
-            <Image />
-            <Text>Box</Text>
+            <View>
+              <Text className="text-white text-xl">
+                Choose a knwoedgebase to work with
+              </Text>
+            </View>
+            <View>
+              <FlatList
+                numColumns={2}
+                contentContainerStyle={styles.flatListContainer}
+                data={allUserKnowledgeBases}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => (
+                  <View style={styles.cardContainer}>
+                    <KnowledgeBaseCardHome item={item} />
+                  </View>
+                )}
+               
+              />
+            </View>
           </View>
-          <View>
-            <Image />
-            <Text>Box</Text>
-          </View>
-          <View>
-            <Image />
-            <Text>Box</Text>
-          </View>
-          <View>
-            <Image />
-            <Text>Box</Text>
-          </View>
-        </View>
+        )}
       </View>
       {isSidebarVisible && (
         <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>
@@ -106,6 +133,73 @@ const Home = () => {
         </TouchableOpacity>
       )}
     </SafeAreaView>
+    // <SafeAreaView className="bg-primary h-full">
+    //   <View className="flex-row justify-between mt-5 mx-2.5">
+    //     <TouchableOpacity onPress={toggleSidebar}>
+    //       <Image
+    //         source={icons.hamburger}
+    //         style={styles.hamburgerIcon}
+    //         resizeMode="contain"
+    //       />
+    //     </TouchableOpacity>
+    //     <Text className="text-white text-2xl">Dashboard</Text>
+    //     <View>
+    //       <Image source={icons.profile} className="w-8 h-8" />
+    //     </View>
+    //   </View>
+    //   <View>
+    //     <Text className="text-white mt-6 ml-7">Explore</Text>
+    //   </View>
+    //   <View className="bg-secondary flex-1 rounded-t-3xl mt-20">
+    //     <View className="flex flex-row flex-wrap mx-2 mt-10">
+    //       <View className="bg-tertiary w-40 h-40 rounded-xl justify-center items-center m-3">
+    //         <Image
+    //           source={images.undraw_lightbulb_moment_re_ulyo}
+    //           className="w-32 h-32"
+    //         />
+    //         <Text className="text-white ">Make perfect offer</Text>
+    //       </View>
+    //       <View className="bg-tertiary w-40 h-40 rounded-xl justify-center items-center m-3">
+    //         <Image source={images.PricePana} className="w-32 h-32" />
+    //         <Text className="text-white ">Discover your car's value</Text>
+    //       </View>
+    //       <View className="bg-tertiary w-40 h-40 rounded-xl justify-center items-center m-3">
+    //         <Image source={images.AnalyzeCuate} className="w-32 h-32" />
+    //         <Text className="text-white ">Identify your future value</Text>
+    //       </View>
+    //       <View className="bg-tertiary w-40 h-40 rounded-xl justify-center items-center m-3">
+    //         <Image source={images.CarFix} className="w-32 h-32" />
+    //         <Text className="text-white ">
+    //           Unlock value through simple fixes
+    //         </Text>
+    //       </View>
+    //     </View>
+    //   </View>
+    //   {isSidebarVisible && (
+    //     <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>
+    //       <Animated.View
+    //         style={[
+    //           styles.sidebar,
+    //           { transform: [{ translateX: sidebarAnim }], width: sidebarWidth },
+    //         ]}
+    //       >
+    //         <Text style={styles.sidebarTitle}>Menu</Text>
+    //         <TouchableOpacity style={styles.menuItem}>
+    //           <Text style={styles.menuItemText}>Home</Text>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style={styles.menuItem}>
+    //           <Text style={styles.menuItemText}>Profile</Text>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style={styles.menuItem}>
+    //           <Text style={styles.menuItemText}>Settings</Text>
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style={styles.menuItem}>
+    //           <Text style={styles.menuItemText}>Help</Text>
+    //         </TouchableOpacity>
+    //       </Animated.View>
+    //     </TouchableOpacity>
+    //   )}
+    // </SafeAreaView>
   );
 };
 

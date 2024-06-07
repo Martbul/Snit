@@ -1,61 +1,66 @@
-import { View, Text, Image ,TouchableOpacity} from 'react-native'
-import React from 'react'
+import { View, Text, Image, TouchableOpacity, FlatList, Animated, Easing, Dimensions } from "react-native";
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons } from '../../constants';
 import SmallSearchInput from './../../components/singleUIElements/SmallSeacrhInput';
+import { carBrandsArr } from '../../assets/carsBrands/carBrands';
+import CarBrandCard from "../../components/CarBrandCard";
+import styles from "../../assets/css/knowledgebase/knowledgebase";
 
 const CarSpecs = () => {
-  return (
-    <SafeAreaView className="bg-primary h-full">
-      <View className="flex flex-col">
-        <View className="flex-row gap-14 pl-1 pr-2 pt-6">
-          <View className="flex items-center align-middle pb-44">
-            <TouchableOpacity
-              onPress={() => router.push("/knowledgebase")}
-              style={{ paddingLeft: 10 }}
-            >
-              <Image
-                source={icons.backArrow}
-                style={{ width: 28, height: 28 }}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          </View>
-          <View className="flex-1 items-center">
-            <TouchableOpacity>
-              <Text className="text-white text-2xl">Car Archive</Text>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Image
-              source={icons.dots}
-              className="w-7 h-7"
-              resizeMode="contain"
-            />
-          </View>
-        </View>
-        <View className="w-full pr-5 pl-5">
-          <SmallSearchInput />
-        </View>
-      </View>
-      <View className="w-full bg-secondary">
-        <View className="flex-row justify-center items-center">
-          <View
-            className=" bg-white border border-xl rounded-xl h-12 justify-center items-center m-3"
-            style={{ width: "45%" }}
-          >
-            <Text>BMW</Text>
-          </View>
-          <View
-            className=" bg-white border border-xl rounded-xl h-12 justify-center items-center m-3"
-            style={{ width: "45%" }}
-          >
-            <Text>Audi</Text>
-          </View>
+   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+   const sidebarWidth = Dimensions.get("window").width * 0.82;
+   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
-          
+   const toggleSidebar = () => {
+     console.log(allUserKnowledgeBases);
+     if (isSidebarVisible) {
+       Animated.timing(sidebarAnim, {
+         toValue: -sidebarWidth,
+         duration: 300,
+         easing: Easing.linear,
+         useNativeDriver: false,
+       }).start(() => setIsSidebarVisible(false));
+     } else {
+       setIsSidebarVisible(true);
+       Animated.timing(sidebarAnim, {
+         toValue: 0,
+         duration: 300,
+         easing: Easing.linear,
+         useNativeDriver: false,
+       }).start();
+     }
+   };
+  return (
+    <SafeAreaView className="bg-primary h-full ">
+      <View className="flex-row justify-between mt-5 mx-2.5">
+        <TouchableOpacity onPress={toggleSidebar}>
+          <Image
+            source={icons.hamburger}
+            style={styles.hamburgerIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <Text className="text-white text-2xl">Car Brands</Text>
+        <View>
+          <Image source={icons.profile} className="w-8 h-8" />
         </View>
       </View>
+      <View className="mx-5 mt-7">
+        <SmallSearchInput />
+      </View>
+
+      <FlatList
+        numColumns={2}
+        contentContainerStyle={{ alignItems: "center" }}
+        data={carBrandsArr}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View>
+            <CarBrandCard item={item} />
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 }

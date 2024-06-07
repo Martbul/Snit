@@ -2,25 +2,24 @@ import { Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { router } from "expo-router";
 
-const KnowledgeBaseCard = ({ item }) => {
-
+const CarBrandCard = ({ item }) => {
   return (
     <>
       <TouchableOpacity
         className="bg-green w-40 h-14 rounded-2xl justify-center items-center"
-        onPress={() =>
-          router.push({
-            pathname: "/(knowledge)/[knowledgedata]",
-            params: { title: item.title },
-          })
-        }
+        // onPress={() =>
+        //   router.push({
+        //     pathname: "/(knowledge)/[knowledgedata]",
+        //     params: { title: item.title },
+        //   })
+        // }
       >
         <Text style={{ fontWeight: "bold", fontSize: 12, color: "white" }}>
-          {item.title}
+          {item}
         </Text>
       </TouchableOpacity>
     </>
   );
 };
 
-export default KnowledgeBaseCard;
+export default CarBrandCard;
