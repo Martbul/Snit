@@ -10,7 +10,7 @@ import { useContext } from "react";
 export default function App() {
    const{user,isLoading} = useContext(AuthContext);
 console.log('index',user);
-   if(!isLoading && user!== null ) return <Redirect href="/home"/>
+   if(!isLoading && user!== null ) return <Redirect href="/(home)/carvaluation"/>
    return (
  
      <SafeAreaView className="bg-primary h-full">

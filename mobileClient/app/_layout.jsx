@@ -38,7 +38,6 @@ const RootLayout = () => {
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(knowledge)" options={{ headerShown: false }} />
-        <Stack.Screen name="(offerandfixes)"options={{ headerShown: false }} />
         <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
       </Stack>
       {/* </KnowledgeBaseContextProvider> */}

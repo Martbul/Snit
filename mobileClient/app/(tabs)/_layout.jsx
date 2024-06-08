@@ -3,6 +3,7 @@ import {Tabs, Redirect} from 'expo-router'
 import {icons} from '../../constants'
 
 
+
 const TabIcon = ({icon,color,name,focused}) =>{
   return (
     <View className="items-center justify-center gap-2">
@@ -36,21 +37,21 @@ const TabsLayout = () => {
           },
         }}
       >
-        <Tabs.Screen
-          name="home"
-          options={{
-            title: "Home",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.home}
-                color={color}
-                name="Home"
-                focused={focused}
-              />
-            ),
-          }}
-        />
+          <Tabs.Screen
+        name="(home)"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={icons.home}
+              color={color}
+              name="Home"
+              focused={focused}
+            />
+          ),
+        }}
+      />
 
         <Tabs.Screen
           name="knowledgebase"
@@ -113,6 +114,7 @@ const TabsLayout = () => {
             ),
           }}
         />
+       
       </Tabs>
     </>
   );

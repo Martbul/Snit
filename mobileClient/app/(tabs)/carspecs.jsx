@@ -54,7 +54,7 @@ const CarSpecs = () => {
         numColumns={2}
         contentContainerStyle={{ alignItems: "center" }}
         data={carBrandsArr}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item}
         renderItem={({ item }) => (
           <View>
             <CarBrandCard item={item} />
