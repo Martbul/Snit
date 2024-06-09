@@ -21,6 +21,7 @@ import addFolder from "../assets/icons/addFolder.png";
 import addPhoto from "../assets/icons/addPhoto.png";
 import dotsBlack from "../assets/icons/dotsBlack.png";
 import hamburger from "../assets/icons/hamburger.png";
+import downarrow from "../assets/icons/downarrow.png";
 
 export default {
   play,
@@ -46,4 +47,5 @@ export default {
   dots,
   dotsBlack,
   hamburger,
+  downarrow
 };

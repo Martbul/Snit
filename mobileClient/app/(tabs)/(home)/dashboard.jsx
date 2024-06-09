@@ -16,16 +16,15 @@ import Swiper from "react-native-swiper";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { icons, images } from "../../../constants";
 import styles from "../../../assets/css/knowledgebase/knowledgebase";
-// import { KnowledgeBaseContext } from "../../contexts/KnowledgeBaseContext";
 import CustomButton from "../../../components/singleUIElements/CustomButton";
 import { router } from "expo-router";
-import KnowledgeBaseCardHome from "../../../components/knowledgeBase/KnowledgeBaseCardHome";
 import { getAllKnowledgeBases } from "../../../services/knowledgeServices";
 import useFetchKnowledgeBases from "../../../hooks/useFetchKnowledgeBases";
 import { CarValuation } from "../../../components/homeScreen/CarValuation";
 import { FutureValue } from "../../../components/homeScreen/FutureValue";
 import { EasyFixes } from "../../../components/homeScreen/EasyFixes";
 import { OfferCreation } from "../../../components/homeScreen/OfferCreation";
+import { Sidebar } from "../../../components/sidebar/Sidebar";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -80,7 +79,7 @@ const Dashboard = () => {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <Text className="text-white text-2xl">Dashboard</Text>
+        <Text className="text-white text-2xl">Home</Text>
         <View>
           <Image source={icons.profile} className="w-8 h-8" />
         </View>
@@ -104,10 +103,21 @@ const Dashboard = () => {
 
         {selectedKnowedgeBase !== null ? 
         <View className="mt-3 pb-16 h-full bg-primary" >  
+        {/* //Todo: add functionality for choosing a databse to work with */}
+
+        <TouchableOpacity className='bg-secondary flex flex-row w-40 h-10 mt-5 justify-center items-center rounded-r-3xl'>
+          <Text className="text-white text-center font-psemibold">{selectedKnowedgeBase?.title}</Text>
+          
+          <Image
+            source={icons.downarrow}
+            className='w-5 h-5'
+          />
+        </TouchableOpacity>
         
-        <Swiper style={styles2.wrapper} loop={false}>
+        <Swiper style={styles2.wrapper} loop={false} activeDotColor={'white'} dotColor={'gray'}>
         <View style={styles2.slide}>
-        <CarValuation/>
+        <CarValuation selectedKnowedgeBase={selectedKnowedgeBase}/>
+        
         </View>
         <View style={styles2.slide}>
         <FutureValue/>
@@ -123,34 +133,12 @@ const Dashboard = () => {
       </View>
     
       {isSidebarVisible && (
-        <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>
-          <Animated.View
-            style={[
-              styles.sidebar,
-              { transform: [{ translateX: sidebarAnim }], width: sidebarWidth },
-            ]}
-          >
-            <Text style={styles.sidebarTitle}>Menu</Text>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Home</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Help</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </TouchableOpacity>
+        <Sidebar toggleSidebar={toggleSidebar} sidebarWidth={sidebarWidth} sidebarAnim={sidebarAnim} />
       )}
     </SafeAreaView>
   );
 };
 const styles2 = StyleSheet.create({
-  wrapper: {},
   slide: {
     flex: 1,
     justifyContent: "center",

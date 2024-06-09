@@ -6,6 +6,7 @@ import SmallSearchInput from './../../components/singleUIElements/SmallSeacrhInp
 import { carBrandsArr } from '../../assets/carsBrands/carBrands';
 import CarBrandCard from "../../components/CarBrandCard";
 import styles from "../../assets/css/knowledgebase/knowledgebase";
+import { Sidebar } from "../../components/sidebar/Sidebar";
 
 const CarSpecs = () => {
    const [isSidebarVisible, setIsSidebarVisible] = useState(false);
@@ -13,7 +14,7 @@ const CarSpecs = () => {
    const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
    const toggleSidebar = () => {
-     console.log(allUserKnowledgeBases);
+     
      if (isSidebarVisible) {
        Animated.timing(sidebarAnim, {
          toValue: -sidebarWidth,
@@ -61,6 +62,9 @@ const CarSpecs = () => {
           </View>
         )}
       />
+        {isSidebarVisible && (
+        <Sidebar toggleSidebar={toggleSidebar} sidebarWidth={sidebarWidth} sidebarAnim={sidebarAnim} />
+      )}
     </SafeAreaView>
   );
 }

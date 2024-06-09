@@ -25,6 +25,8 @@ import { AuthContext } from "../../contexts/AuthContext";
 import useFetchKnowledgeBases from "../../hooks/useFetchKnowledgeBases";
 import EmptyState from "../../components/EmptyState";
 import styles from "../../assets/css/knowledgebase/knowledgebase";
+import { Sidebar } from "../../components/sidebar/Sidebar";
+// import { toggleSidebar } from "../../components/sidebar/toggleSidebar";
 
 const Knowledge = () => {
   const { user } = useContext(AuthContext);
@@ -71,7 +73,9 @@ const Knowledge = () => {
   return (
     <SafeAreaView style={styles.container} className="bg-primary h-full">
       <View style={styles.header}>
-        <TouchableOpacity onPress={toggleSidebar}>
+      <TouchableOpacity 
+      onPress={toggleSidebar}>
+       {/* onPress={() => toggleSidebar(isSidebarVisible, setIsSidebarVisible, sidebarAnim, sidebarWidth)}> */}
           <Image
             source={icons.hamburger}
             style={styles.hamburgerIcon}
@@ -85,28 +89,7 @@ const Knowledge = () => {
       </View>
 
       {isSidebarVisible && (
-        <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>
-          <Animated.View
-            style={[
-              styles.sidebar,
-              { transform: [{ translateX: sidebarAnim }], width: sidebarWidth },
-            ]}
-          >
-            <Text style={styles.sidebarTitle}>Menu</Text>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Home</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Text style={styles.menuItemText}>Help</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </TouchableOpacity>
+        <Sidebar toggleSidebar={toggleSidebar} sidebarWidth={sidebarWidth} sidebarAnim={sidebarAnim} />
       )}
 
       <View style={styles.contentContainer}>

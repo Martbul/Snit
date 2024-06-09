@@ -1,4 +1,6 @@
-// export const toggleSidebar = ({isSidebarVisible,setIsSidebarVisible}) => {
+// import { Animated, Easing } from "react-native";
+
+// export const toggleSidebar = (isSidebarVisible, setIsSidebarVisible, sidebarAnim, sidebarWidth) => {
    
 //     if (isSidebarVisible) {
 //       Animated.timing(sidebarAnim, {
