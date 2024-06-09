@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import Swiper from "react-native-swiper";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { icons, images } from "../../../constants";
 import styles from "../../../assets/css/knowledgebase/knowledgebase";
@@ -22,12 +22,16 @@ import { router } from "expo-router";
 import KnowledgeBaseCardHome from "../../../components/knowledgeBase/KnowledgeBaseCardHome";
 import { getAllKnowledgeBases } from "../../../services/knowledgeServices";
 import useFetchKnowledgeBases from "../../../hooks/useFetchKnowledgeBases";
-import CarValuation from "../../../components/homeScreen/CarValuation";
-import PagerView from 'react-native-pager-view';
-const Carvaluation = () => {
+import { CarValuation } from "../../../components/homeScreen/CarValuation";
+import { FutureValue } from "../../../components/homeScreen/FutureValue";
+import { EasyFixes } from "../../../components/homeScreen/EasyFixes";
+import { OfferCreation } from "../../../components/homeScreen/OfferCreation";
+
+const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
-     getAllKnowledgeBases(user?.email))
+    getAllKnowledgeBases(user?.email)
+  );
 
   const [selectedKnowedgeBase, setSelectedKnowedgeBase] = useState(null);
 
@@ -35,24 +39,19 @@ const Carvaluation = () => {
   const [selectedKBdocuments, setSelectedKBdocuments] = useState(null);
 
   useEffect(() => {
-    const setKnowledgeBases = async() =>{
+    const setKnowledgeBases = async () => {
       await refetch();
-    setSelectedKnowedgeBase(knowledgeBases[0])
-    }
-    setKnowledgeBases()
+      setSelectedKnowedgeBase(knowledgeBases[0]);
+    };
+    setKnowledgeBases();
   }, []);
-  // const {
-  //   allUserKnowledgeBases, selectedKnowedgeBase,
-  //   selectedKBimages,
-  //   selectedKBdocuments,
-  // } = useContext(KnowledgeBaseContext);
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const sidebarWidth = Dimensions.get("window").width * 0.82;
   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
   const toggleSidebar = () => {
-   console.log(selectedKnowedgeBase);
+    console.log(selectedKnowedgeBase);
     if (isSidebarVisible) {
       Animated.timing(sidebarAnim, {
         toValue: -sidebarWidth,
@@ -101,50 +100,28 @@ const Carvaluation = () => {
               />
             </View>
           </>
-        ) : (
-          <></>
-          // <View>
-          //   <View>
-          //     <Text className="text-white text-xl">
-          //       Choose a knwoedgebase to work with
-          //     </Text>
-          //   </View>
-          //   <View>
-          //     {/* <FlatList
-          //       numColumns={2}
-          //       contentContainerStyle={styles.flatListContainer}
-          //       data={knowledgeBases}
-          //       keyExtractor={(item) => item._id}
-          //       renderItem={({ item }) => (
-          //         <View style={styles.cardContainer}>
-          //           <KnowledgeBaseCardHome item={item} setSelectedKnowedgeBase={setSelectedKnowedgeBase} />
-          //         </View>
-          //       )}
-          //     /> */}
-          //   </View>
-          // </View>
-        )}
+        ) : null}
 
-          {selectedKnowedgeBase !== null ? (
-          // <CarValuation selectedKB={selectedKnowedgeBase}>
-            
-          // </CarValuation>
-          <View style={styles1.container}>
-          <PagerView style={styles1.container} initialPage={0}>
-            <View style={styles1.page} key="1">
-              <Text className="text-white text-2xl">First page</Text>
-              <Text className="text-white text-2xl">Swipe ➡️</Text>
-            </View>
-            <View style={styles1.page} key="2">
-              <Text className="text-white text-2xl">Second page</Text>
-            </View>
-            <View style={styles1.page} key="3">
-              <Text className="text-white text-2xl">Third page</Text>
-            </View>
-          </PagerView>
+        {selectedKnowedgeBase !== null ? 
+        <View className="mt-3 pb-16 h-full bg-primary" >  
+        
+        <Swiper style={styles2.wrapper} loop={false}>
+        <View style={styles2.slide}>
+        <CarValuation/>
         </View>
-        ) : ''}
+        <View style={styles2.slide}>
+        <FutureValue/>
+        </View>
+        <View style={styles2.slide}>
+        <EasyFixes/>
+        </View>
+        <View style={styles2.slide}>
+        <OfferCreation/>
+        </View>
+      </Swiper>
+      </View> : null}
       </View>
+    
       {isSidebarVisible && (
         <TouchableOpacity style={styles.overlay} onPress={toggleSidebar}>
           <Animated.View
@@ -172,14 +149,13 @@ const Carvaluation = () => {
     </SafeAreaView>
   );
 };
-
-const styles1 = StyleSheet.create({
-  container: {
+const styles2 = StyleSheet.create({
+  wrapper: {},
+  slide: {
     flex: 1,
-  },
-  page: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
-export default Carvaluation;
+
+export default Dashboard;

@@ -1,19 +1,9 @@
-import { View, Text, Image, FlatList, SafeAreaView } from 'react-native'
-import React from 'react'
-import {images}from '../../constants'
-import { router } from "expo-router";
-import CustomButton from "../singleUIElements/CustomButton";
+import { Text, View } from "react-native";
 
-const CarValuation = ({selectedKB }) => {
-    return (
-      <SafeAreaView className="bg-primary h-full">
- 
-       <View>
-        <Text className="text-white">df</Text>
-       </View>
-      </SafeAreaView>
-    );
-  };
-  
-
-export default CarValuation
+export const CarValuation = () => {
+    return ( <>
+        <View>
+            <Text className="text-white text-center font-psemibold">Car Valuation</Text>
+        </View>
+    </> );
+}
