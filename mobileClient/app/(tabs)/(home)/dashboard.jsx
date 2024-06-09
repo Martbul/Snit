@@ -29,7 +29,7 @@ import { Sidebar } from "../../../components/sidebar/Sidebar";
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
-    getAllKnowledgeBases(user?.email)
+    getAllKnowledgeBases(user.email)
   );
 
   const [selectedKnowedgeBase, setSelectedKnowedgeBase] = useState(null);
@@ -41,8 +41,13 @@ const Dashboard = () => {
     const setKnowledgeBases = async () => {
       await refetch();
       setSelectedKnowedgeBase(knowledgeBases[0]);
+      setSelectedKBimages(selectedKnowedgeBase.images);
+      setSelectedKBdocuments(selectedKnowedgeBase.docs);
     };
     setKnowledgeBases();
+    
+    
+    console.log(selectedKnowedgeBase);
   }, []);
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
@@ -118,6 +123,7 @@ const Dashboard = () => {
         <View style={styles2.slide}>
         <CarValuation selectedKnowedgeBase={selectedKnowedgeBase}/>
         
+                
         </View>
         <View style={styles2.slide}>
         <FutureValue/>

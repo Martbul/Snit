@@ -39,6 +39,7 @@ const Knowledge = () => {
   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
   useEffect(() => {
+    
     refetch();
   }, []);
 

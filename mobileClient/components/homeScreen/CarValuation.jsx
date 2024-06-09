@@ -1,7 +1,13 @@
 import { Text, View } from "react-native";
 
 export const CarValuation = ({selectedKnowedgeBase }) => {
-   const { title } = selectedKnowedgeBase
+    if(selectedKnowedgeBase){
+   let { title } = selectedKnowedgeBase
+    }else{
+        title ='error with getting KB'
+    }
+
+
 
     return ( <>
         <View>
