@@ -7,10 +7,16 @@ import {images} from '../constants'
 import CustomButton from "../components/singleUIElements/CustomButton";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 export default function App() {
    const{user,isLoading} = useContext(AuthContext);
-console.log('index',user);
-   if(!isLoading && user!== null ) return <Redirect href="/(home)/dashboard"/>
+  
+  if (isLoading) {
+    return <LoadingSpinner />; // Render a loading indicator while user data is being fetched
+  }
+
+
+   if(!isLoading && user !== null ) return <Redirect href="/(home)/dashboard"/>
    return (
  
      <SafeAreaView className="bg-primary h-full">

@@ -14,7 +14,8 @@ export const AuthContextProvider = ({ children }) => {
     try {
       setIsLoading(true);
       const storedUser = await AsyncStorage.getItem('user');
-      if (storedUser && !user) {
+    
+      if (storedUser!==null && !user) {
         setUser(JSON.parse(storedUser));
       }
     } catch (error) {

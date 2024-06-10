@@ -16,8 +16,7 @@ router.post("/getAllKnowledgeBases", async (req, res) => {
     console.log("err  " + errorMessages);
     return errorMessages;
   }
-});
-module.exports = router;
+})
 
 
 

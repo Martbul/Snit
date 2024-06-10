@@ -25,29 +25,26 @@ import { FutureValue } from "../../../components/homeScreen/FutureValue";
 import { EasyFixes } from "../../../components/homeScreen/EasyFixes";
 import { OfferCreation } from "../../../components/homeScreen/OfferCreation";
 import { Sidebar } from "../../../components/sidebar/Sidebar";
+import { generateText } from "../../../aiModels/langchain";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
-  const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
+  
+  
+  const {  refetch } = useFetchKnowledgeBases(() =>
     getAllKnowledgeBases(user.email)
   );
 
   const [selectedKnowedgeBase, setSelectedKnowedgeBase] = useState(null);
 
-  const [selectedKBimages, setSelectedKBimages] = useState(null);
-  const [selectedKBdocuments, setSelectedKBdocuments] = useState(null);
 
   useEffect(() => {
     const setKnowledgeBases = async () => {
+       const knowledgeBases= await getAllKnowledgeBases(user.email);
       await refetch();
       setSelectedKnowedgeBase(knowledgeBases[0]);
-      setSelectedKBimages(selectedKnowedgeBase.images);
-      setSelectedKBdocuments(selectedKnowedgeBase.docs);
     };
     setKnowledgeBases();
-    
-    
-    console.log(selectedKnowedgeBase);
   }, []);
 
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
@@ -55,7 +52,7 @@ const Dashboard = () => {
   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
   const toggleSidebar = () => {
-    console.log(selectedKnowedgeBase);
+    
     if (isSidebarVisible) {
       Animated.timing(sidebarAnim, {
         toValue: -sidebarWidth,
@@ -90,7 +87,7 @@ const Dashboard = () => {
         </View>
       </View>
       <View>
-        {knowledgeBases == undefined && selectedKnowedgeBase === null ? (
+        { selectedKnowedgeBase === null ? (
           <>
             <View className="flex flex-col justify-center items-center">
               <Image source={images.FilesSearching} className="w-60 h-60" />
@@ -121,8 +118,8 @@ const Dashboard = () => {
         
         <Swiper style={styles2.wrapper} loop={false} activeDotColor={'white'} dotColor={'gray'}>
         <View style={styles2.slide}>
-        <CarValuation selectedKnowedgeBase={selectedKnowedgeBase}/>
-        
+                <CarValuation selectedKnowedgeBase={selectedKnowedgeBase} />
+                
                 
         </View>
         <View style={styles2.slide}>
