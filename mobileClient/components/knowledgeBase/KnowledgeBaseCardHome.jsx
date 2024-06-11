@@ -4,12 +4,6 @@ import { router } from "expo-router";
 import { KnowledgeBaseContext } from "../../contexts/KnowledgeBaseContext";
 
 const KnowledgeBaseCardHome = ({ item,setSelectedKnowedgeBase }) => {
-    // const {
-    //   allUserKnowledgeBases,
-    //   selectedKnowedgeBase,
-    //   selectedKBimages,
-    //   selectedKBdocuments,
-    // } = useContext(KnowledgeBaseContext);
   return (
     <>
       <TouchableOpacity

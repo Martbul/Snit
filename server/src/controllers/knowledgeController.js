@@ -134,7 +134,7 @@ router.put("/editKnowledgeBaseName", async (req, res) => {
     const allUserKnowledgeBases = await knowledgeService.allUserKnowledgeBases(
       creator
     );
-  console.log("allUserKnowledgeBases -->  ", allUserKnowledgeBases);
+
         res.json(allUserKnowledgeBases);
       
   } catch (error) {

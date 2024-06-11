@@ -1,4 +1,3 @@
-const User = require("../models/User");
 const Knowledgebase = require("../models/Knowledgebase");
 
 
@@ -94,6 +93,9 @@ exports.getCurrentKnowledgeBaseImages = async (title, userEmail) => {
     console.log("err: " + err);
   }
 };
+
+
+
 exports.getCurrentKnowledeBaseDocs = async (title, userEmail) => {
   try {
     const knowledgeBase = await Knowledgebase.find({
@@ -111,18 +113,14 @@ exports.getCurrentKnowledeBaseDocs = async (title, userEmail) => {
 
 
 
-
-
-
 exports.deleteFileFromCurrentKnowledgeBase = async (
   fileFirebaseUrl,
   knowledgeBaseTitle,
   creator
 ) => {
   try {
-    console.log(fileFirebaseUrl);
-    console.log(knowledgeBaseTitle);
-    console.log(creator);
+  
+
     const knowledgeBase = await Knowledgebase.findOne({
       title: knowledgeBaseTitle,
       creator,
@@ -132,9 +130,6 @@ exports.deleteFileFromCurrentKnowledgeBase = async (
     if (!knowledgeBase) {
       throw new Error("Knowledge base not found.");
     }
-
-    
-    
 
    const isImage = fileFirebaseUrl.includes("/images%");
     const isDocument =
@@ -146,7 +141,6 @@ exports.deleteFileFromCurrentKnowledgeBase = async (
       throw new Error("Invalid file type.");
     }
 
-    // Remove the file from the appropriate array
     if (isImage) {
       knowledgeBase.images = knowledgeBase.images.filter(
         (image) => image !== fileFirebaseUrl
@@ -157,16 +151,17 @@ exports.deleteFileFromCurrentKnowledgeBase = async (
       );
     }
 
-    // Save the updated knowledgeBase
+   
     await knowledgeBase.save();
 
-    return knowledgeBase; // Return the updated knowledgeBase
+    return knowledgeBase; 
 
 
   } catch (err) {
     console.log("err: " + err);
   }
 };
+
 
 
 exports.editKnowledgeBaseName = async (
@@ -179,7 +174,7 @@ exports.editKnowledgeBaseName = async (
       title: knowledgeBaseTitle,
       creator,
     });
-    console.log(knowledgeBase);
+   
 
     if (!knowledgeBase) {
       throw new Error("Knowledge base not found.");
