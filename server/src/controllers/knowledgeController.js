@@ -121,6 +121,31 @@ router.post("/deleteFileFromCurrentKnowledgeBase",
 
 
 
+router.put("/editKnowledgeBaseName", async (req, res) => {
+  const { newName, knowledgeBaseTitle, creator } = req.body;
+  console.log(newName, knowledgeBaseTitle, creator);
+  try {
+    const updatedKBname = await knowledgeService.editKnowledgeBaseName(
+      newName,
+      knowledgeBaseTitle,
+      creator
+    );
+
+    const allUserKnowledgeBases = await knowledgeService.allUserKnowledgeBases(
+      creator
+    );
+  console.log("allUserKnowledgeBases -->  ", allUserKnowledgeBases);
+        res.json(allUserKnowledgeBases);
+      
+  } catch (error) {
+    const errorMessages = extractErrorMsgs(error);
+    console.log("err  " + errorMessages);
+    return errorMessages;
+  }
+});
+
+
+
 
 
 

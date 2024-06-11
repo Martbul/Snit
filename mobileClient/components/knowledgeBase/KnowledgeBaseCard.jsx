@@ -1,9 +1,8 @@
-import { Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import { Text, Image, TouchableOpacity, View, StyleSheet } from "react-native";
+import React, { useState } from "react";
 import { router } from "expo-router";
 
 const KnowledgeBaseCard = ({ item }) => {
-
   return (
     <>
       <TouchableOpacity
@@ -11,7 +10,10 @@ const KnowledgeBaseCard = ({ item }) => {
         onPress={() =>
           router.push({
             pathname: "/(knowledge)/[knowledgedata]",
-            params: { title: item.title },
+            params: {
+              title: item.title,
+            
+            },
           })
         }
       >

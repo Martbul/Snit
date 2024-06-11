@@ -22,6 +22,7 @@ import addPhoto from "../assets/icons/addPhoto.png";
 import dotsBlack from "../assets/icons/dotsBlack.png";
 import hamburger from "../assets/icons/hamburger.png";
 import downarrow from "../assets/icons/downarrow.png";
+import left from "../assets/icons/left.png";
 
 export default {
   play,
@@ -47,5 +48,6 @@ export default {
   dots,
   dotsBlack,
   hamburger,
-  downarrow
+  downarrow,
+  left,
 };

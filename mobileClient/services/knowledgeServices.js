@@ -234,3 +234,28 @@ export const deleteFileFromCurrentKnowledgeBase = async (fileFirebaseUrl, knowle
   }
   
 };
+
+
+export const editKnowledgeBaseName = async (newName, knowledgeBaseTitle, creator) => {
+  try {
+  
+    const response = await fetch(`${baseUrl}/knowledge/editKnowledgeBaseName`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({newName, knowledgeBaseTitle, creator})
+    });
+    
+
+  if (response.error) {
+    console.log("error", response);
+    throw new Error(response);
+  }
+
+  return response;
+  } catch (error) {
+    console.log(error);
+  }
+  
+};

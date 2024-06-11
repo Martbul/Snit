@@ -5,6 +5,8 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  StyleSheet,
+  TextInput,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,15 +18,21 @@ import * as DocumentPicker from "expo-document-picker";
 import { AuthContext } from "../../contexts/AuthContext";
 import {
   addFilesToKnowledgeBase,
+  editKnowledgeBaseName,
+  
   getCurrentKnowledgeBaseImages,
   getcurrentKnowledgeBaseDocs,
 } from "../../services/knowledgeServices";
 import KnowledgeBaseDocs from "../../components/knowledgeBase/KnowledgeBaseDocs";
 import * as Progress from "react-native-progress";
 
+import { BackHandler } from "react-native";
 const KnowledgeData = () => {
   const { user } = useContext(AuthContext);
-  const { title } = useLocalSearchParams();
+
+  
+const { title } = useLocalSearchParams();
+
 const [progress,setProgress] = useState(null)
   const [isImagePage, setIsImagesPage] = useState(true);
   const [images, setImages] = useState([]);
@@ -86,6 +94,55 @@ const [progress,setProgress] = useState(null)
     getCurrentKnowledgeBaseData();
   }, []);
 
+
+
+  //editing the knoweldgebase title
+   const [isEditing, setIsEditing] = useState(false);
+   const [currentTitle, setCurrentTitle] = useState(title);
+
+   const handleHeadingClick = () => {
+     setIsEditing(true);
+     console.log('EDITING KNOWLEDGEBASE NAME');
+   };
+
+   const handleInputChange = (text) => {
+     setCurrentTitle(text);
+   };
+
+   const handleBlur = () => {
+     setIsEditing(false);
+     //onTitleChange(currentTitle);
+   };
+
+  const handleSubmitEditing = async () => {
+    //todo: add functionality to check f the new name already exists
+   
+    setIsEditing(false);
+    console.log(currentTitle);
+    const allEditedKB = await editKnowledgeBaseName(
+      currentTitle,
+      title,
+      user.email
+    );
+    
+    
+  };
+useEffect(() => {
+  const backAction = () => {
+    router.push("/knowledgebase");
+    return true; // Prevent default behavior (exit app)
+  };
+console.log('pushing');
+  const backHandler = BackHandler.addEventListener(
+    "hardwareBackPress",
+    backAction
+  );
+
+  return () => backHandler.remove();
+}, []);
+
+
+
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="flex-row gap-14 pl-1 pr-2 pt-6">
@@ -95,16 +152,31 @@ const [progress,setProgress] = useState(null)
             style={{ paddingLeft: 10 }}
           >
             <Image
-              source={icons.backArrow}
-              style={{ width: 28, height: 28 }}
+              source={icons.left}
+             className="w-10 h-14"
               resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
+
         <View className="flex-1 items-center">
-          <TouchableOpacity>
-            <Text className="text-white text-2xl">{title}</Text>
-          </TouchableOpacity>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              className="text-white text-2xl"
+              value={currentTitle}
+              onChangeText={handleInputChange}
+              onBlur={handleBlur}
+              onSubmitEditing={handleSubmitEditing}
+              autoFocus
+            />
+          ) : (
+            <TouchableOpacity onPress={handleHeadingClick}>
+              <Text style={styles.heading} className="text-white text-2xl">
+                {currentTitle}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View>
           <Image source={icons.dots} className="w-7 h-7" resizeMode="contain" />
@@ -238,5 +310,17 @@ const [progress,setProgress] = useState(null)
     </SafeAreaView>
   );
 };
-
+const styles = StyleSheet.create({
+  heading: {
+    fontSize: 24,
+    fontWeight: "bold",
+    padding: 10,
+  },
+  input: {
+    fontSize: 24,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+  },
+});
 export default KnowledgeData;

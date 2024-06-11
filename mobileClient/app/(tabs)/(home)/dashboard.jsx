@@ -29,30 +29,27 @@ import { generateText } from "../../../aiModels/langchain";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
-  
-  
-  const {  refetch } = useFetchKnowledgeBases(() =>
+  const { refetch } = useFetchKnowledgeBases(() =>
     getAllKnowledgeBases(user.email)
   );
-
   const [selectedKnowedgeBase, setSelectedKnowedgeBase] = useState(null);
 
-
+ const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const sidebarWidth = Dimensions.get("window").width * 0.82;
+  const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
+  
   useEffect(() => {
     const setKnowledgeBases = async () => {
-       const knowledgeBases= await getAllKnowledgeBases(user.email);
+      const knowledgeBases = await getAllKnowledgeBases(user.email);
       await refetch();
       setSelectedKnowedgeBase(knowledgeBases[0]);
     };
     setKnowledgeBases();
   }, []);
 
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const sidebarWidth = Dimensions.get("window").width * 0.82;
-  const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
+ 
 
   const toggleSidebar = () => {
-    
     if (isSidebarVisible) {
       Animated.timing(sidebarAnim, {
         toValue: -sidebarWidth,
@@ -87,7 +84,7 @@ const Dashboard = () => {
         </View>
       </View>
       <View>
-        { selectedKnowedgeBase === null ? (
+        {selectedKnowedgeBase === null ? (
           <>
             <View className="flex flex-col justify-center items-center">
               <Image source={images.FilesSearching} className="w-60 h-60" />
@@ -103,40 +100,47 @@ const Dashboard = () => {
           </>
         ) : null}
 
-        {selectedKnowedgeBase !== null ? 
-        <View className="mt-3 pb-16 h-full bg-primary" >  
-        {/* //Todo: add functionality for choosing a databse to work with */}
+        {selectedKnowedgeBase !== null ? (
+          <View className="mt-3 pb-16 h-full bg-primary">
+            {/* //Todo: add functionality for choosing a databse to work with */}
 
-        <TouchableOpacity className='bg-secondary flex flex-row w-40 h-10 mt-5 justify-center items-center rounded-r-3xl'>
-          <Text className="text-white text-center font-psemibold">{selectedKnowedgeBase?.title}</Text>
-          
-          <Image
-            source={icons.downarrow}
-            className='w-5 h-5'
-          />
-        </TouchableOpacity>
-        
-        <Swiper style={styles2.wrapper} loop={false} activeDotColor={'white'} dotColor={'gray'}>
-        <View style={styles2.slide}>
+            <TouchableOpacity className="bg-secondary flex flex-row w-40 h-10 mt-5 justify-center items-center rounded-r-3xl">
+              <Text className="text-white text-center font-psemibold">
+                {selectedKnowedgeBase?.title}
+              </Text>
+
+              <Image source={icons.downarrow} className="w-5 h-5" />
+            </TouchableOpacity>
+
+            <Swiper
+              style={styles2.wrapper}
+              loop={false}
+              activeDotColor={"white"}
+              dotColor={"gray"}
+            >
+              <View style={styles2.slide}>
                 <CarValuation selectedKnowedgeBase={selectedKnowedgeBase} />
-                
-                
-        </View>
-        <View style={styles2.slide}>
-        <FutureValue/>
-        </View>
-        <View style={styles2.slide}>
-        <EasyFixes/>
-        </View>
-        <View style={styles2.slide}>
-        <OfferCreation/>
-        </View>
-      </Swiper>
-      </View> : null}
+              </View>
+              <View style={styles2.slide}>
+                <FutureValue />
+              </View>
+              <View style={styles2.slide}>
+                <EasyFixes />
+              </View>
+              <View style={styles2.slide}>
+                <OfferCreation />
+              </View>
+            </Swiper>
+          </View>
+        ) : null}
       </View>
-    
+
       {isSidebarVisible && (
-        <Sidebar toggleSidebar={toggleSidebar} sidebarWidth={sidebarWidth} sidebarAnim={sidebarAnim} />
+        <Sidebar
+          toggleSidebar={toggleSidebar}
+          sidebarWidth={sidebarWidth}
+          sidebarAnim={sidebarAnim}
+        />
       )}
     </SafeAreaView>
   );

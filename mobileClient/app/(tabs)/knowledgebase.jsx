@@ -30,16 +30,22 @@ import { Sidebar } from "../../components/sidebar/Sidebar";
 
 const Knowledge = () => {
   const { user } = useContext(AuthContext);
-  const { data: knowledgeBases, refetch } = useFetchKnowledgeBases(() =>
+  const {  refetch } = useFetchKnowledgeBases(() =>
     getAllKnowledgeBases(user.email)
   );
-
+  const [allKnowledgeBases, setAllKnowledgeBases] =useState(null)
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const sidebarWidth = Dimensions.get("window").width * 0.82;
   const sidebarAnim = useState(new Animated.Value(-sidebarWidth))[0];
 
   useEffect(() => {
-    
+      const setKnowledgeBases = async () => {
+        const knowledgeBases = await getAllKnowledgeBases(user.email);
+        setAllKnowledgeBases(knowledgeBases);
+        await refetch();
+        setSelectedKnowedgeBase(knowledgeBases[0]);
+      };
+      setKnowledgeBases();
     refetch();
   }, []);
 
@@ -74,9 +80,8 @@ const Knowledge = () => {
   return (
     <SafeAreaView style={styles.container} className="bg-primary h-full">
       <View style={styles.header}>
-      <TouchableOpacity 
-      onPress={toggleSidebar}>
-       {/* onPress={() => toggleSidebar(isSidebarVisible, setIsSidebarVisible, sidebarAnim, sidebarWidth)}> */}
+        <TouchableOpacity onPress={toggleSidebar}>
+          {/* onPress={() => toggleSidebar(isSidebarVisible, setIsSidebarVisible, sidebarAnim, sidebarWidth)}> */}
           <Image
             source={icons.hamburger}
             style={styles.hamburgerIcon}
@@ -90,18 +95,24 @@ const Knowledge = () => {
       </View>
 
       {isSidebarVisible && (
-        <Sidebar toggleSidebar={toggleSidebar} sidebarWidth={sidebarWidth} sidebarAnim={sidebarAnim} />
+        <Sidebar
+          toggleSidebar={toggleSidebar}
+          sidebarWidth={sidebarWidth}
+          sidebarAnim={sidebarAnim}
+        />
       )}
 
       <View style={styles.contentContainer}>
         <FlatList
           numColumns={2}
           contentContainerStyle={styles.flatListContainer}
-          data={knowledgeBases}
+          data={allKnowledgeBases}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={styles.cardContainer}>
-              <KnowledgeBaseCard item={item} />
+              <KnowledgeBaseCard
+                item={item}
+              />
             </View>
           )}
           ListEmptyComponent={() => (

@@ -167,3 +167,28 @@ exports.deleteFileFromCurrentKnowledgeBase = async (
     console.log("err: " + err);
   }
 };
+
+
+exports.editKnowledgeBaseName = async (
+  newName,
+  knowledgeBaseTitle,
+  creator
+) => {
+  try {
+    const knowledgeBase = await Knowledgebase.findOne({
+      title: knowledgeBaseTitle,
+      creator,
+    });
+    console.log(knowledgeBase);
+
+    if (!knowledgeBase) {
+      throw new Error("Knowledge base not found.");
+    }
+
+    knowledgeBase.title = newName; 
+    const updatedKBname = await knowledgeBase.save(); 
+    return updatedKBname; 
+  } catch (err) {
+    console.log("err: " + err);
+  }
+};
